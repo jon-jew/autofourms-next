@@ -1,0 +1,26 @@
+.logo {
+  margin-right: 5px;
+}
+
+.logo-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-right: 30px;
+  gap: 10px;
+  
+
+  font-family: var(--font-overpass);
+  color: #b81111;
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: .3rem;
+
+  @media screen and (max-width: 900px) {
+    flex-grow: 5;
+    font-size: 18px;
+    margin: 0;
+  }
+
+}

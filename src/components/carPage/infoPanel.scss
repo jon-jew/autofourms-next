@@ -1,0 +1,98 @@
+$small: 450px;
+$medium: 1000px;
+
+.info-panel-container {
+  margin: 0 auto;
+  // display: grid;
+  // grid-gap: 1rem;
+  // padding: 1rem;
+  // grid-template-columns: repeat(auto-fit, 310px);
+  // grid-template-rows: masonry;
+  // justify-content: center;
+
+
+  column-count: auto;
+  column-width: 320px;
+  column-fill: balance;
+
+  column-gap: 1em;
+  overflow: visible;
+
+
+  .info-panel-card {
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
+    break-inside: avoid-column;
+    overflow: hidden;
+
+    width: 310px;
+    margin-bottom: 20px;
+    background: #f6f6f6;
+    border-radius: 10px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    .card-header {
+      background: #ebebeb;
+      flex-direction: row;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      text-transform: uppercase;
+      font-family: "Overpass", sans-serif;
+      font-weight: bold;
+      width: 310px;
+      font-size: 1em;
+      padding: 5px;
+
+      div {
+        margin-top: 5px;
+      }
+    }
+
+    .card-body {
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      gap: 15px;
+
+      .info-thumbnail {
+        position: relative;
+        width: 275px;
+        height: 183px;
+        border-radius: 5px;
+        overflow: hidden;
+      }
+
+      .info-table {
+        width: 100%;
+
+        td {
+          padding: 5px;
+        }
+      }
+
+      .body-row {
+        background: #FFF;
+        text-align: left;
+        font-size: 13px;
+
+        .body-title {
+          width: 110px;
+        }
+
+        .body-text {
+          width: 200px;
+        }
+
+        .body-img {
+          width: 100px;
+          border-radius: 10px;
+        }
+      }
+    }
+  }
+}

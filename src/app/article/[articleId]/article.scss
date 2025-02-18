@@ -1,0 +1,22 @@
+.article-container {
+  background: #FFF;
+  position: relative;
+  padding: 15px 30px;
+  width: 100%;
+  min-height: calc(100vh - 70px);
+  max-width: 800px;
+  margin: 20px auto;
+
+  .button-container {
+    position: absolute;
+    right: 30px;
+    top: 20px;
+  }
+
+  .article-content {
+    padding: 5px 30px;
+    img {
+      max-width: 400px;
+    }
+  }
+}

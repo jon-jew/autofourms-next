@@ -1,0 +1,67 @@
+$medium: 800px;
+
+.car-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-content: center;
+  flex-direction: row;
+  position: relative;
+  width: 100%;
+  padding-top: 10px;
+  height: calc(100vh - 70px);
+
+  @media screen and (max-width: $medium) {
+    display: block;
+  }
+
+  .tab-panel {
+    padding: 10px;
+    overflow-y: scroll;
+    height: calc(100% - 45px);
+
+    @media screen and (max-width: $medium) {
+      overflow-y: visible;
+      height: auto;
+    }
+  }
+
+  @media screen and (max-width: $medium) {
+    flex-direction: column;
+
+    .car-page-header {
+      min-width: 100%;
+      height: auto !important;
+      color: #ffffffb4;
+    }
+
+    .desktop-content {
+      display: none !important;
+    }
+
+    .header-container {
+      flex-direction: column !important;
+      align-items: center !important;;
+    }
+  }
+
+  @media screen and (min-width: $medium) {
+    .compact-content {
+      display: none !important;
+    }
+
+    .header-container {
+      width: 350px;
+    }
+
+    .tabs-container {
+      height: calc(100vh - 70px) !important;
+    }
+  }
+
+  .tabs-container {
+    display: block;
+    padding-top: 8px;
+    width: 100%;
+  }
+}

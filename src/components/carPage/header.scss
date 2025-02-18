@@ -1,0 +1,103 @@
+$medium: 800px;
+
+.car-page-header {
+  background: #f6f6f6;
+  height: calc(100vh - 70px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .header-container {
+    display: flex;
+    gap: 15px;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 5px;
+
+    @media screen and (max-width: $medium) {
+      gap: 2px;
+      padding: 5px;
+    }
+
+    .button-container {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-items: center;
+      margin-left: 15px;
+      gap: 12px;
+
+      @media screen and (min-width: $medium) {
+        margin-left: 10px;
+        width: 100%;
+      }
+    }
+
+    .header-tags-container {
+      padding: 0px 10px;
+      display: flex;
+      width: 100%;
+      flex-wrap: wrap;
+      gap: 4px;
+
+      @media screen and (max-width: $medium) {
+        margin: 2px;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+
+    .header-img {
+      position: relative;
+      height: 200px;
+      width: 300px;
+      border-radius: 10px;
+      margin-bottom: 5px;
+      overflow: hidden;
+
+      background: linear-gradient(100deg, #eceff1 30%, #f6f7f8 50%, #eceff1 70%);
+      background-size: 400%;
+      animation: loading 0.75s ease-in-out infinite;
+    }
+
+    .header-content {
+      width: 100%;
+      margin-top: 10px;
+
+      .header-text {
+        font-family: "Overpass", sans-serif;
+        margin: 15px 0px 0px 0px;
+        text-transform: uppercase;
+        font-weight: bold;
+        font-size: 22px;
+        line-height: 18px;
+
+        .header-year {
+          font-size: 18px;
+          font-weight: normal;
+        }
+
+        .header-submodel {
+          margin-left: 4px;
+          font-size: 14px;
+          font-weight: normal;
+        }
+      }
+    }
+
+    .description-container {
+      font-size: 12px;
+      color: black;
+      padding: 5px 15px;
+      line-height: 18px;
+
+      @media screen and (max-width: $medium) {
+        text-align: center;
+        max-width: 350px;
+        padding: 5px;
+
+      }
+    }
+  }
+}

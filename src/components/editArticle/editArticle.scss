@@ -1,0 +1,25 @@
+.article-form {
+  margin: 10px auto;
+  max-width: 850px;
+  background: #FFF;
+  padding: 10px;
+  min-height: 400px;
+  position: relative;
+
+  .footer {
+    width: 100%;
+  }
+
+  .rich-text-editor-wrapper {
+    overflow: hidden;
+    margin: 10px 0px;
+    padding: 5px;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.23);
+  }
+
+  .rich-text-editor-editor {
+    height: calc(100vh - 300px);
+    padding: 5px;
+  }
+}

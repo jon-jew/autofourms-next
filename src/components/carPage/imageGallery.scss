@@ -1,0 +1,106 @@
+.image-gallery {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+
+  .image-preview {
+    position: relative;
+    width: 250px;
+    height: 250px;
+    cursor: pointer;
+    transition: box-shadow 0.3s;
+
+    &:hover {
+      box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
+    }
+  }
+  .image-preview img {
+    transition: 0.75s;
+    -webkit-transition: all 0.75s ease; 
+    -moz-transition: all 0.75s ease; 
+    -ms-transition: all 0.75s ease; 
+    -o-transition: all 0.75s ease; 
+  }
+}
+
+.top-button-container {
+  width: 100%;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loading {
+  color: transparent;
+  background: linear-gradient(100deg, #eceff1 30%, #f6f7f8 50%, #eceff1 70%);
+  background-size: 400%;
+  animation: loading 0.75s ease-in-out infinite;
+}
+
+@keyframes loading {
+  0% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0 50%;
+  }
+}
+
+.selected-image-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 0px 25px;
+  border-radius: 10px;
+  background: #f6f6f6;
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  max-width: 500px;
+  justify-content: center;
+  align-items: center;
+
+  .modal-image-container {
+    position: relative;
+    height: 450px;
+    width: 450px;
+  }
+
+  .modal-image-footer {
+    min-height: 20px;
+    padding: 5px;
+    font-size: 16px;
+  }
+
+  .image-msg-container {
+    background: #3b3b3b6f;
+    height: 100%;
+    width: 100%;
+    left: 0px;
+    position: absolute;
+
+    .image-msg {
+      background: #FFF;
+      text-align: center;
+      border-radius: 10px;
+      padding: 15px;
+      width: 300px;
+      position: absolute; 
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 300;
+    }
+  }
+
+  .image-button-container {
+    text-align: right;
+    width: 100%;
+  }
+}
