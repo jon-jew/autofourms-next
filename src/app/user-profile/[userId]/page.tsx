@@ -14,7 +14,8 @@ import { UserContext } from '@/contexts/userContext';
 import { LoadingContext } from '@/contexts/loadingOverlayContext';
 import CarCardContainer from '@/components/carCard/carCardContainer';
 import { ArticlePanel } from '@/components/carPage';
-import { getCarsByUserId, getUsername } from '@/lib/firebase/firebase';
+import { getCarsByUserId } from '@/lib/firebase/car';
+import { getUsername } from '@/lib/firebase/utils';
 
 const tabSx = { backgroundColor: '#ffffffb4' };
 

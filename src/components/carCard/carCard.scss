@@ -94,6 +94,10 @@
         position: absolute;
         right: 0px;
         top: 0px;
+
+        svg {
+          color: #ba6666;
+        }
       }
     }
 
@@ -155,9 +159,10 @@
     }
 
     .footer-pill {
+      font-family: "Roboto","Helvetica","Arial",sans-serif;
       background: #dedede;
-      padding: 2px 5px;
-      border-radius: 8px;
+      padding: 2px 7px;
+      border-radius: 15px;
     }
   }
 
@@ -167,4 +172,21 @@
       transform: scale(1.01);
     }
   }
+}
+
+.fade-in {
+	opacity: 1;
+	animation-name: fadeInOpacity;
+	animation-iteration-count: 1;
+	animation-timing-function: ease-in;
+	animation-duration: 0.25s;
+}
+
+@keyframes fadeInOpacity {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
 }

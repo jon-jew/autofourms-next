@@ -1,33 +1,33 @@
-"use client";
-import React, { useState, useEffect, useContext } from 'react';
+'use server';
 
 import CarCard from '@/components/carCard/carCard';
 import { LoadingContext } from '@/contexts/loadingOverlayContext';
-import { getCars } from '@/lib/firebase/firebase';
+import { getCars } from '@/lib/firebase/car';
 
 import './home.scss';
 
-const Home = () => {
-  const { setIsLoading } = useContext(LoadingContext);
-  const [data, setData] = useState([]);
-  const fetchCars = async () => {
-    const res = await getCars();
-    if (res) setData(res);
-    setIsLoading(false);
-  };
+export default async function Home() {
+  // const { setIsLoading } = useContext(LoadingContext);
+  // const [data, setData] = useState([]);
+  // const fetchCars = async () => {
+  //   const res = await getCars();
+  //   console.log(res)
+  //   if (res) setData(res);
+  //   setIsLoading(false);
+  // };
 
-  useEffect(() => {
-    setIsLoading(true);
-    fetchCars();
-  }, []);
+  // useEffect(() => {
+  //   setIsLoading(true);
+  //   fetchCars();
+  // }, []);
+
+  const data = await getCars();
 
   return (
     <div className="car-card-container">
-      {data && data.map((car) => 
-        <CarCard key={car.id} data={car} />
+      {data && data.map((car, index ) => 
+        <CarCard key={car.id} data={car} index={index} />
       )}
     </div>
   );
 }
-
-export default Home;

@@ -6,7 +6,6 @@ import Image from 'next/image';
 
 import Chip from '@mui/material/Chip';
 import Badge from '@mui/material/Badge';
-import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 
 import EditIcon from '@mui/icons-material/Edit';

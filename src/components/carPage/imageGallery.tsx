@@ -18,7 +18,7 @@ import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 
 import { FormImageCropper } from '@/components/formComponents';
-import { createCarImage, getCarImages, deleteCarImage, editCarCaption } from '@/lib/firebase/firebase';
+import { createCarImage, getCarImages, deleteCarImage, editCarCaption } from '@/lib/firebase/carImage';
 import { UserContext } from '@/contexts/userContext';
 
 import './imageGallery.scss';
@@ -271,7 +271,7 @@ export default function ImageGallery({ carId, ownerId }: { carId: string, ownerI
         aria-describedby="modal-modal-description"
       >
         <FormImageCropper
-          initalImgSrc={null}
+          initialImgSrc={null}
           aspectRatio={1 / 1}
           imageSize={[800, 800]}
           onChange={onImageUpload}

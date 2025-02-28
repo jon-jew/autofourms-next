@@ -7,7 +7,7 @@ import { useSearchParams } from 'next/navigation';
 import EditArticle from '@/components/editArticle/editArticle';
 import { UserContext } from '@/contexts/userContext';
 import { createCarArticle } from '@/lib/firebase/article';
-import { getCar } from '@/lib/firebase/firebase';
+import { getCar } from '@/lib/firebase/car';
 import LoadingOverlay from '@/components/loadingOverlay';
 
 interface Article {

@@ -14,10 +14,27 @@
   }
 }
 
+.category-title {
+  font-weight: bold;
+  font-size: 18px;
+  color: #b81111;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  text-transform: uppercase;
+  align-items: center;
+  font-family: var(--font-overpass);
+
+  h3 {
+    margin-left: 5px;
+  }
+}
+
 .form-details-modal {
   background: #FFF;
   width: 80%;
   position: absolute;
+
   border-radius: 5px;
   top: 50%;
   left: 50%;

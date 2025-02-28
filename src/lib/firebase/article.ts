@@ -72,7 +72,6 @@ export const getCarArticle = async (articleId: string, cb: Function) => {
     const docSnap = await getDoc(articleDocRef);
 
     if (docSnap.exists()) {
-      console.log(docSnap.data())
       const data = docSnap.data();
       const xhr = new XMLHttpRequest();
       xhr.responseType = "blob";

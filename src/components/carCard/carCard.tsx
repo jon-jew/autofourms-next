@@ -1,6 +1,7 @@
 "use client";
 
 import React, { ReactEventHandler, useState } from 'react';
+import { toast } from 'react-toastify';
 import Link from 'next/link';
 import Image from 'next/image';
 import clx from 'classnames';
@@ -13,19 +14,15 @@ import './carCard.scss';
 
 interface ContentProps {
   data: { [key: string]: any };
-  onLoad: ReactEventHandler<HTMLImageElement>;
-  loaded: boolean;
 };
 
-const CarCardContent = ({ data, onLoad, loaded }: ContentProps) => (
+const CarCardContent = ({ data }: ContentProps) => (
   <div className="car-card-header loading">
-    <div
-      className="content"
-      style={{ opacity: loaded ? 1 : 0 }}
-    >
+    <div className="content">
       <div className="like-container">
         <div className="like-count">
-        { Math.floor(Math.random() * 1000)} <FavoriteIcon sx={{ color: '#ba6666' }} fontSize="small" />
+          <span>1000</span>
+          <FavoriteIcon color="inherit" fontSize="small" />
         </div>
       </div>
       <div className="card-overlay">
@@ -44,9 +41,9 @@ const CarCardContent = ({ data, onLoad, loaded }: ContentProps) => (
       </div>
       <div className="card-photo">
         <Image
-          onLoad={onLoad}
           src={data.previewImage}
-          loading="lazy"
+          className="fade-in"
+          // loading="lazy"
           alt={`thumbnail for ${data.id}`}
           fill
           style={{ objectFit: 'cover' }}
@@ -61,27 +58,32 @@ interface CardProps {
   disableLink?: boolean;
   isSmallCard?: boolean;
   disableFooter?: boolean;
+  index?: number;
 };
 
-const CarCard = ({ data, disableLink, isSmallCard, disableFooter }: CardProps) => {
-  const [loaded, setLoaded] = useState<boolean>(false);
-  const onLoad = () => setLoaded(true);
-
-  if (!data.previewImage) return null;
+const CarCard = ({ data, disableLink, isSmallCard, disableFooter, index }: CardProps) => {
+  console.log(data)
+  if (!data.previewImage) {
+    return null;
+  }
 
   return (
     <div
       className={clx({
         "car-card": true,
+        "fade-in": true,
         "disabled-link": disableLink,
         "small-card": isSmallCard,
       })}
+      // style={{
+      //   animationDelay: `${index ? index * 0.2 : 0}s`,
+      // }}
     >
       {disableLink ?
-        <CarCardContent data={data} onLoad={onLoad} loaded={loaded} />
+        <CarCardContent data={data} />
         :
         <Link href={`/car-profile/${data.id}`}>
-          <CarCardContent data={data} onLoad={onLoad} loaded={loaded} />
+          <CarCardContent data={data} />
         </Link>
       }
       {!disableFooter &&
@@ -97,7 +99,12 @@ const CarCard = ({ data, disableLink, isSmallCard, disableFooter }: CardProps) =
           }
           {Array.isArray(data.tags) &&
             data.tags.map((tag) =>
-              <div key={`${tag}-${data.id}`} className="footer-pill">{tag}</div>
+              <div
+                key={`${tag}-${data.id}`}
+                className="footer-pill"
+              >
+                {tag}
+              </div>
             )
           }
         </div>

@@ -20,8 +20,8 @@ const Article = ({
   params: Promise<{ articleId: string }>
 }) => {
   const [articleId, setArticleId] = useState(null);
-  const [articleContent, setArticleContent] = useState(null);
-  const [articleTitle, setArticleTitle] = useState(null);
+  const [articleContent, setArticleContent] = useState<string>('');
+  const [articleTitle, setArticleTitle] = useState<string>('');
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -37,16 +37,16 @@ const Article = ({
       const param = (await params).articleId;
       await getCarArticle(
         param,
-        ({ content, title }) => {
+        ({ content, title }: { content: string, title: string }) => {
           setArticleContent(content);
-          setArticleTitle(title);;
+          setArticleTitle(title);
         }
       );
       setArticleId(param);
     };
     fetchArticle();
   }, []);
-  
+
   return (
     <div className="article-container">
       <div className="button-container">

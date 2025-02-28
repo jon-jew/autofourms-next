@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@mui/material';
@@ -11,119 +11,144 @@ import EditIcon from '@mui/icons-material/Edit';
 
 import { toTitleCase } from '../utils';
 import { UserContext } from '@/contexts/userContext';
-import wheelIcon from '../../assets/wheelIcon.png';
 import { getCategories } from '../editPanel/fieldSettings';
 
 import './infoPanel.scss';
 
-const InfoPanelCard = ({ data, thumbnail, title, name, icon }) => {
+const InfoPanelCard = (
+  { data, thumbnail, title, icon }:
+    {
+      data: { [key: string]: any },
+      thumbnail?: string,
+      title: string,
+      icon: React.JSX.Element,
+    }
+) => {
   return (
-    <div className="info-panel-card">
-      <div className="card-header">
-        {icon}
-        <div>
-          {title}
+    <div className="info-card-container">
+
+      <div className="info-panel-card">
+        <div className="card-header">
+          {icon}
+          <span>
+            {title}
+          </span>
         </div>
-      </div>
-      <div className="card-body">
-        {thumbnail &&
-          <div className="info-thumbnail" >
-            <Image
-              src={thumbnail}
-              alt={`${title} thumbnail`}
-              fill
-              style={{ objectFit: "cover" }}
-            />
-          </div>
-        }
-        <table className="info-table">
-          <tbody>
-            {Object.keys(data).map((key) => (
-              <tr key={`${key}-${data[key].value}`} className="body-row">
-                <td className="body-title">{toTitleCase(key)}</td>
-                <td className="body-text">
-                  {data[key].value}
-                  {/* {data[key].image && <div><img className="body-img" src={data[key].image} /></div>} */}
-                </td>
-                {data[key].description &&
-                  <div>
-                    <IconButton sx={{ marginTop: '-5px' }} size="small">
-                      <InfoIcon fontSize="small" />
-                    </IconButton>
-                  </div>
-                }
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <div className="card-body">
+          <table className="info-table">
+            <tbody>
+              {Object.keys(data).map((key) => (
+                <tr key={`${key}-${data[key].value}`} className="body-row">
+                  <td className="body-title">{toTitleCase(key)}</td>
+                  <td className="body-text">
+                    {data[key].value}
+                    {/* {data[key].image && <div><img className="body-img" src={data[key].image} /></div>} */}
+                  </td>
+                  {data[key].description &&
+                    <div>
+                      <IconButton sx={{ marginTop: '-5px' }} size="small">
+                        <InfoIcon fontSize="small" />
+                      </IconButton>
+                    </div>
+                  }
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          {thumbnail &&
+            <div className="info-thumbnail" >
+              <Image
+                src={thumbnail}
+                alt={`${title} thumbnail`}
+                fill
+                style={{ objectFit: "cover" }}
+              />
+            </div>
+          }
+        </div>
       </div>
     </div>
   );
 };
 
-const convertToWheelSpecs = ({ diameter, width, offset }) => {
+const convertToWheelSpecs = (
+  { diameter, width, offset }:
+    { diameter: number, width: number, offset: number }
+) => {
   const signedOffset = offset >= 0 ? `+${offset}` : offset;
   return `${diameter}x${width} ${signedOffset}`;
 }
 
-const WheelInfoCard = ({ data, thumbnail }) => {
+const WheelInfoCard = (
+  { data, thumbnail }:
+    { data: { [key: string]: any }, thumbnail: string }
+) => {
   return (
-    <div className="info-panel-card">
-      <div className="card-header">
-        <div className="info-card-img">
+    <div className="info-card-container">
+      <div className="info-panel-card">
+        <div className="card-header">
           <Image
-            src={wheelIcon}
+            src="/wheel-icon-red.png"
             alt="wheel icon"
             height={24}
             width={24}
           />
+          <span>Wheels and Tires</span>
         </div>
-        <div>Wheels and Tires</div>
-      </div>
-      <div className="card-body">
-        {thumbnail &&
-          <div>
-            <img className="info-thumbnail" width={250} src={thumbnail} />
-          </div>
-        }
-        <div className="body-row">
-          <div className="body-title">Wheels</div>
-          <div className="body-text">
-            {
-              data.isStaggered ?
-                <div>
-                  F: {data.wheel.front.brand} {data.wheel.front.model} {convertToWheelSpecs(data.wheel.front)}<br />
-                  R: {data.wheel.rear.brand} {data.wheel.rear.model} {convertToWheelSpecs(data.wheel.rear)}
-                </div>
-                :
-                <div>{data.wheel.front.brand} {data.wheel.front.model}<br />
-                  {convertToWheelSpecs(data.wheel.front)}
-                </div>
-            }
-          </div>
-        </div>
-        <div className="body-row">
-          <div className="body-title">Tires</div>
-          <div className="body-text">
-            {
-              data.isStaggered ?
-                <div>
-                  F: {data.tire.front.brand} {data.tire.front.model} {data.tire.front.size}
-                  R: {data.tire.rear.brand} {data.tire.rear.model} {data.tire.rear.size}
-                </div> :
-                <div>
-                  {data.tire.front.brand} {data.tire.front.model}<br />
-                  {data.tire.front.size}
-                </div>
-            }
-          </div>
+        <div className="card-body">
+          <table className="info-table">
+            <tbody>
+              <tr className="body-row">
+                <td className="wheel-title">Wheels</td>
+                <td className="wheel-text">
+                  {
+                    data.isStaggered ?
+                      <>
+                        F: {data.wheel.front.brand} {data.wheel.front.model} {convertToWheelSpecs(data.wheel.front)}<br />
+                        R: {data.wheel.rear.brand} {data.wheel.rear.model} {convertToWheelSpecs(data.wheel.rear)}
+                      </>
+                      :
+                      <>{data.wheel.front.brand} {data.wheel.front.model}<br />
+                        {convertToWheelSpecs(data.wheel.front)}
+                      </>
+                  }
+                </td>
+              </tr>
+              <tr className="body-row">
+                <td className="wheel-title">Tires</td>
+                <td className="wheel-text">
+                  {
+                    data.isStaggered ?
+                      <>
+                        F: {data.tire.front.brand} {data.tire.front.model} {data.tire.front.size}
+                        R: {data.tire.rear.brand} {data.tire.rear.model} {data.tire.rear.size}
+                      </> :
+                      <>
+                        {data.tire.front.brand} {data.tire.front.model}<br />
+                        {data.tire.front.size}
+                      </>
+                  }
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          {thumbnail &&
+            <div className="info-thumbnail" >
+              <Image
+                src={thumbnail}
+                alt="Wheels thumbnail"
+                fill
+                style={{ objectFit: "cover" }}
+              />
+            </div>
+          }
         </div>
       </div>
     </div>
   );
 }
 
-const InfoPanel = ({ data }) => {
+const InfoPanel = ({ data }: { data: { [key: string]: any } }) => {
   const { user, userLoading } = useContext(UserContext);
   const categories = getCategories();
 
@@ -140,13 +165,13 @@ const InfoPanel = ({ data }) => {
           }
         </div>
         <div className="info-panel-container">
-
-          <InfoPanelCard
-            title="Specification"
-            name="specification"
-            data={data.specification}
-            icon={categories[0].icon}
-          />
+          {Object.keys(data.specification).length > 0 &&
+            <InfoPanelCard
+              title="Specification"
+              data={data.specification}
+              icon={categories[0].icon}
+            />
+          }
           <WheelInfoCard
             thumbnail={data.thumbnails ? data.thumbnails.wheels : null}
             data={data.wheelTire}
@@ -157,7 +182,6 @@ const InfoPanel = ({ data }) => {
                 <InfoPanelCard
                   key={`info-card-${category.name}`}
                   title={category.title}
-                  name={category.name}
                   data={data[category.name]}
                   thumbnail={data.thumbnails[category.name]}
                   icon={category.icon}

@@ -8,7 +8,7 @@ import LoadingOverlay from "@/components/loadingOverlay";
 import { UserContext } from "@/contexts/userContext";
 import { LoadingContext } from "@/contexts/loadingOverlayContext";
 
-import { getCar, editCar } from "@/lib/firebase/firebase";
+import { getCar, editCar } from "@/lib/firebase/car";
 
 const EditPage = ({
   params,

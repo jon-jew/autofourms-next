@@ -95,11 +95,14 @@ const CategorySection = ({
   return (
     <div className="form-array-container">
       <div className="form-array-header">
-        <Chip
+        {/* <Chip
           avatar={icon}
           label={categoryTitle}
           sx={{ fontWeight: "bold" }}
-        />
+        /> */}
+        <div className="category-title">
+          {icon} <h3>{categoryTitle}</h3>
+        </div>
         <div className="form-array-top-buttons">
           {watch(`thumbnails.${categoryName}`) &&
             <Tooltip title="Remove thumbnail image">

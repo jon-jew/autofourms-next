@@ -3,52 +3,52 @@ $medium: 1000px;
 
 .info-panel-container {
   margin: 0 auto;
-  // display: grid;
-  // grid-gap: 1rem;
-  // padding: 1rem;
-  // grid-template-columns: repeat(auto-fit, 310px);
-  // grid-template-rows: masonry;
-  // justify-content: center;
-
 
   column-count: auto;
   column-width: 320px;
   column-fill: balance;
-
   column-gap: 1em;
   overflow: visible;
 
+  .info-card-container {
+    width: 100%;
+  }
 
   .info-panel-card {
     box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px;
     break-inside: avoid-column;
     overflow: hidden;
-
-    width: 310px;
+    display: inline;
+    width: 100%;
+    max-width: 320px;
+    margin: auto;
     margin-bottom: 20px;
-    background: #f6f6f6;
+    background: #FFF;
     border-radius: 10px;
-    text-align: center;
     display: flex;
     align-items: center;
     flex-direction: column;
 
     .card-header {
-      background: #ebebeb;
-      flex-direction: row;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
-      text-transform: uppercase;
-      font-family: "Overpass", sans-serif;
-      font-weight: bold;
       width: 310px;
-      font-size: 1em;
-      padding: 5px;
+      padding: 10px 10px 5px 10px;
+      text-align: left;
+      display: flex;
+      flex-direction: row;
+      justify-content: start;
+      align-items: center;
 
-      div {
-        margin-top: 5px;
+      font-family: "Overpass", sans-serif;
+      text-transform: uppercase;
+      font-weight: bold;
+      font-size: 1.1em;
+
+      color: #b81111;
+      border-bottom: #b81111 2px solid;
+
+      img {
+        display: inline-block;
+        margin-right: 10px;
       }
     }
 
@@ -71,14 +71,16 @@ $medium: 1000px;
         width: 100%;
 
         td {
-          padding: 5px;
+          padding: 10px;
         }
       }
 
       .body-row {
         background: #FFF;
         text-align: left;
-        font-size: 13px;
+        font-size: 15px;
+        line-height: 17px;
+        border-bottom: 1px #00000049 solid;
 
         .body-title {
           width: 110px;
@@ -86,6 +88,14 @@ $medium: 1000px;
 
         .body-text {
           width: 200px;
+        }
+
+        .wheel-title {
+          width: 80px;
+        }
+
+        .wheel-text {
+          width: 230px;
         }
 
         .body-img {

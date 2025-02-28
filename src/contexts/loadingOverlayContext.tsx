@@ -1,7 +1,6 @@
 "use client";
 
 import React, { createContext, useState, useEffect } from "react";
-import { usePathname } from "next/navigation";
 
 import LoadingOverlay from "@/components/loadingOverlay";
 
@@ -11,7 +10,6 @@ export const LoadingContext = createContext({
 });
 
 export const LoadingProvider = ({ children }: { children: React.ReactNode }) => {
-  const pathname = usePathname();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   return (

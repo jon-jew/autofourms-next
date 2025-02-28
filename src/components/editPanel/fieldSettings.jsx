@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import EqualizerIcon from '@mui/icons-material/Equalizer';
 
 const FIELD_ARRAYS = [
   {
@@ -7,7 +6,7 @@ const FIELD_ARRAYS = [
     name: 'specification',
     isAutoComplete: false,
     hasDetailModal: false,
-    icon: <EqualizerIcon sx={{ color:"#000" }} />,
+    icon: <Image src="/specification-icon-red.png" width={24} height={24} alt="Powertrain Icon" />,
     options: [
       {
         label: 'Power',
@@ -49,7 +48,7 @@ const FIELD_ARRAYS = [
     name: 'powertrain',
     isAutoComplete: true,
     hasDetailModal: false,
-    icon: <Image src="/powertrainIcon.png" width={24} height={24} alt="Powertrain Icon" />,
+    icon: <Image src="/engine-icon-red.png" width={20} height={20} alt="Powertrain Icon" />,
     options: [
       {
         label: 'Engine',
@@ -114,7 +113,7 @@ const FIELD_ARRAYS = [
     name: 'drivetrain',
     isAutoComplete: true,
     hasDetailModal: false,
-    icon: <Image src="/drivetrainIcon.png" alt="Drivetrain Icon" width={24} height={24} />,
+    icon: <Image src="/drivetrain-icon-red.png" alt="Drivetrain Icon" width={20} height={20} />,
     options: [
       {
         label: 'Transmission',
@@ -147,7 +146,7 @@ const FIELD_ARRAYS = [
     name: 'exhaust',
     isAutoComplete: true,
     hasDetailModal: false,
-    icon: <Image src="/exhaustIcon.png" alt="Exhuast Icon" width={24} height={24} />,
+    icon: <Image src="/exhaust-icon-red.png" alt="Exhuast Icon" width={24} height={24} />,
     options: [
       {
         label: 'Exhaust Manifold',
@@ -172,7 +171,7 @@ const FIELD_ARRAYS = [
     name: 'suspension',
     isAutoComplete: true,
     hasDetailModal: false,
-    icon: <Image src="/suspensionIcon.png" alt="suspension icon" width={24} height={24} />,
+    icon: <Image src="/suspension-icon-red.png" alt="suspension icon" width={20} height={20} />,
     options: [
       {
         label: 'Coilovers',
@@ -201,7 +200,7 @@ const FIELD_ARRAYS = [
     name: 'brakes',
     isAutoComplete: true,
     hasDetailModal: false,
-    icon: <Image src="/brakesIcon.png" alt="Brake Icon" width={24} height={24} />,
+    icon: <Image src="/brakes-icon-red.png" alt="Brake Icon" width={20} height={20} />,
     options: [
       {
         label: 'Pads',
@@ -234,7 +233,7 @@ const FIELD_ARRAYS = [
     name: 'exterior',
     isAutoComplete: true,
     hasDetailModal: false,
-    icon: <Image src="/exteriorIcon.png" alt="Exterior Icon" width={24} height={24} />,
+    icon: <Image src="/exterior-icon-red.png" alt="Exterior Icon" width={24} height={24} />,
     options: [
       {
         label: 'Front Bumper',
@@ -283,7 +282,7 @@ const FIELD_ARRAYS = [
     name: 'interior',
     isAutoComplete: true,
     hasDetailModal: false,
-    icon: <Image src="/interiorIcon.png" alt="interior icon" width={24} height={24} />,
+    icon: <Image src="/interior-icon-red.png" alt="interior icon" width={20} height={20} />,
     options: [
       {
         label: 'Seats',
