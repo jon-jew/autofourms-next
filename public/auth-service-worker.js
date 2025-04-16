@@ -8293,7 +8293,7 @@
     console.log("Service worker installed with Firebase config", firebaseConfig);
   });
   self.addEventListener("fetch", (event) => {
-    const { origin } = new URL(event.request.url);
+    const { origin, searchParams } = new URL(event.request.url);
     if (origin !== self.location.origin) return;
     event.respondWith(fetchWithFirebaseHeaders(event.request));
   });

@@ -2,7 +2,8 @@
 
 import CarCard from '@/components/carCard/carCard';
 import { LoadingContext } from '@/contexts/loadingOverlayContext';
-import { getCars } from '@/lib/firebase/car';
+import CarCardContainer from '@/components/carCard/carCardContainer';
+import { getCars } from '@/lib/firebase/carServer';
 
 import './home.scss';
 
@@ -22,12 +23,8 @@ export default async function Home() {
   // }, []);
 
   const data = await getCars();
-
-  return (
-    <div className="car-card-container">
-      {data && data.map((car, index ) => 
-        <CarCard key={car.id} data={car} index={index} />
-      )}
-    </div>
-  );
+  if (data)
+    return (
+      <CarCardContainer carList={data} />
+    );
 }

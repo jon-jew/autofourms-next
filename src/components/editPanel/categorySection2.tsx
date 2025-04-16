@@ -66,7 +66,7 @@ const PositionMoveButtons = ({
         disabled={index === fields.length - 1}
         onClick={(e) => {
           e.preventDefault();
-          swap(index, index + 1)
+          swap(index, index + 1);
           setMovedField(`${name}.${index + 1}`);
           setTimeout(() => setMovedField(null), 250);
         }}
@@ -93,7 +93,7 @@ const CategorySection = ({
   const [movedField, setMovedField] = useState<string | null>(null);
 
   return (
-    <div className="form-array-container">
+    <div className="form-array-container bg-white rounded-md p-2">
       <div className="form-array-header">
         {/* <Chip
           avatar={icon}
@@ -103,7 +103,7 @@ const CategorySection = ({
         <div className="category-title">
           {icon} <h3>{categoryTitle}</h3>
         </div>
-        <div className="form-array-top-buttons">
+        <div className="grow text-right">
           {watch(`thumbnails.${categoryName}`) &&
             <Tooltip title="Remove thumbnail image">
               <IconButton
@@ -175,10 +175,10 @@ const CategorySection = ({
                     isOnBlur
                     control={control}
                     // disableOption={(option) => activeCatagories.includes(option.label)}
-                    name={`${categoryName}.${index}.label`}
+                    name={`${categoryName}.${index}.label` as const}
                     freeSolo={isAutoComplete}
                     width={220}
-                    label={`Category ${index + 1}`}
+                    label={`Item ${index + 1}`}
                     onChange={() => setValue(`${categoryName}.${index}.value`, "")}
                     options={options}
                   />
@@ -186,10 +186,10 @@ const CategorySection = ({
                   <FormSelectField
                     control={control}
                     // disableOption={(option) => activeCatagories.includes(option.label)}
-                    name={`${categoryName}.${index}.label`}
+                    name={`${categoryName}.${index}.label` as const}
                     freeSolo={isAutoComplete}
                     width={115}
-                    label={`Category ${index + 1}`}
+                    label={`Item ${index + 1}`}
                     onChange={() => setValue(`${categoryName}.${index}.value`, "")}
                     options={options.map((option) => option.label)}
                   />
@@ -219,14 +219,14 @@ const CategorySection = ({
                 {valueFieldType === "select" ?
                   <FormSelectField
                     control={control}
-                    name={`${categoryName}.${index}.value`}
+                    name={`${categoryName}.${index}.value` as const}
                     label="Value"
                     options={optionObject.options}
                   /> :
                   <FormTextField
                     isOnBlur
                     control={control}
-                    name={`${categoryName}.${index}.value`}
+                    name={`${categoryName}.${index}.value` as const}
                     width={isAutoComplete ? 340 : 145}
                     label="Value"
                   />

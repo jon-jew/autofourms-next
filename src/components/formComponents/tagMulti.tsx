@@ -2,6 +2,8 @@ import Chip from '@mui/material/Chip';
 import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import { Controller } from "react-hook-form";
+import LocalOfferIcon from "@mui/icons-material/LocalOffer";
+
 
 const values = [
     {
@@ -65,6 +67,7 @@ export default function TagMulti(
                         <TextField
                             {...params}
                             variant="filled"
+                            label={<span><LocalOfferIcon /> Tags</span>}
                             placeholder="Enter Tags"
                         />
                     )}

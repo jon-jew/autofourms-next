@@ -26,7 +26,6 @@ const InfoPanelCard = (
 ) => {
   return (
     <div className="info-card-container">
-
       <div className="info-panel-card">
         <div className="card-header">
           {icon}
@@ -37,22 +36,24 @@ const InfoPanelCard = (
         <div className="card-body">
           <table className="info-table">
             <tbody>
-              {Object.keys(data).map((key) => (
-                <tr key={`${key}-${data[key].value}`} className="body-row">
-                  <td className="body-title">{toTitleCase(key)}</td>
-                  <td className="body-text">
-                    {data[key].value}
-                    {/* {data[key].image && <div><img className="body-img" src={data[key].image} /></div>} */}
-                  </td>
-                  {data[key].description &&
-                    <div>
-                      <IconButton sx={{ marginTop: '-5px' }} size="small">
-                        <InfoIcon fontSize="small" />
-                      </IconButton>
-                    </div>
-                  }
-                </tr>
-              ))}
+              {Object.keys(data)
+                .sort((a, b) => data[a].order - data[b].order)
+                .map((key) => (
+                  <tr key={`${key}-${data[key].value}`} className="body-row">
+                    <td className="body-title">{toTitleCase(key)}</td>
+                    <td className="body-text">
+                      {data[key].value}
+                      {/* {data[key].image && <div><img className="body-img" src={data[key].image} /></div>} */}
+                    </td>
+                    {data[key].description &&
+                      <div>
+                        <IconButton sx={{ marginTop: '-5px' }} size="small">
+                          <InfoIcon fontSize="small" />
+                        </IconButton>
+                      </div>
+                    }
+                  </tr>
+                ))}
             </tbody>
           </table>
           {thumbnail &&

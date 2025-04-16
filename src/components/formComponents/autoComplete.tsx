@@ -25,10 +25,11 @@ export default function FreeSoloCreateOption({
         formState,
       }) => {
         const handleChange = (event, newValue) => {
-          if (typeof newValue === 'object' && newValue !== null)
-            onChange(newValue.label);
+          console.log(newValue, event)
+          if (typeof event.target.value === 'object' && event.target.value  !== null)
+            onChange(event.target.value.label);
           else
-            onChange(newValue);
+            onChange(event.target.value);
           _onChange();
         };
         return (

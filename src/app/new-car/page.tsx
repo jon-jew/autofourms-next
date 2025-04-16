@@ -4,7 +4,7 @@ import React, { useEffect, useContext, useState } from "react";
 import { redirect } from 'next/navigation';
 
 import EditPanel from "@/components/editPanel";
-import { createCar } from "@/lib/firebase/car";
+import { createCar } from "@/lib/firebase/carServer";
 import { UserContext } from "@/contexts/userContext";
 
 const initialData = {
@@ -14,6 +14,7 @@ const initialData = {
   submodel: "",
   description: "",
   tags: [],
+  thumbnails: {},
   wheelTire: {
     isStaggered: false,
     tire: {

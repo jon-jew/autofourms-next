@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { promises as fs } from 'fs';
 
 import CarCardContainer from '@/components/carCard/carCardContainer';
-import { getCarsByMakeModel } from '@/lib/firebase/car';
+import { getCarsByMakeModel } from '@/lib/firebase/carServer';
 
 import '../../explore.scss';
 

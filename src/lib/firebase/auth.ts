@@ -4,6 +4,7 @@ import {
   signOut,
   updateProfile,
   onAuthStateChanged as _onAuthStateChanged,
+  onIdTokenChanged as _onIdTokenChanged,
   NextOrObserver,
 } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
@@ -13,6 +14,10 @@ import { toastSuccess, toastError } from "@/components/utils";
 
 export function onAuthStateChanged(cb: NextOrObserver<any>) {
 	return _onAuthStateChanged(auth, cb);
+}
+
+export function onIdTokenChanged(cb: NextOrObserver<any>) {
+  return _onIdTokenChanged(auth, cb);
 }
 
 export async function createUser(email: string, password: string, username: string) {

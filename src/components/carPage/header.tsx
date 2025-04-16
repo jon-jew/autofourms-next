@@ -16,7 +16,6 @@ import BookmarkIcon from '@mui/icons-material/Bookmark';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import GarageIcon from '@mui/icons-material/Garage';
 
-import { UserContext } from '@/contexts/userContext';
 import CarCard from '@/components/carCard/carCard';
 
 import './header.scss'
@@ -51,9 +50,10 @@ const DesktopHeaderContent = ({ data }: { data: { [key: string]: any } }) => (
   </div>
 );
 
-export default function Header({ data }: { data: { [key: string]: any } }) {
-  const { user, userLoading } = React.useContext(UserContext);
-
+export default function Header(
+  { data, isUserOwner }:
+    { data: { [key: string]: any }, isUserOwner: boolean }
+) {
   const [bookmark, setBookmark] = React.useState(false);
   const [liked, setLiked] = React.useState(false);
 
@@ -103,7 +103,7 @@ export default function Header({ data }: { data: { [key: string]: any } }) {
               <GarageIcon />
             </IconButton>
           </Link>
-          {user && !userLoading && user.uid === data.userId &&
+          {isUserOwner &&
             <Link href={`/edit-car/${data.id}`}>
               <IconButton size="small">
                 <EditIcon />

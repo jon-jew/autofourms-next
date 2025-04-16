@@ -1,9 +1,7 @@
 'use client';
 
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
-import Link from 'next/link';
-import { redirect } from 'next/navigation';
 
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -14,8 +12,6 @@ import InfoIcon from '@mui/icons-material/Info';
 import ArticleIcon from '@mui/icons-material/Article';
 
 import { Header, ImageGallery, InfoPanel, ArticlePanel } from '@/components/carPage';
-import { LoadingContext } from '@/contexts/loadingOverlayContext';
-import { getCar } from '@/lib/firebase/car';
 
 // import './carPage.scss'
 
@@ -26,18 +22,19 @@ export default function CarPage({
   data,
   images,
   tab,
+  isUserOwner,
 }: {
   carId: string,
   data: { [key: string]: any },
   images?: string[],
   tab?: string,
+  isUserOwner: boolean,
 }) {
 
   const router = useRouter();
   const pathname = usePathname();
 
   const [tabValue, setTabValue] = useState<string>(tab ? tab : 'images');
-
 
   const handleChange = (event, newValue) => {
     setTabValue(newValue);
@@ -48,7 +45,7 @@ export default function CarPage({
     <div className="car-page">
       {data && carId &&
         <>
-          <Header data={data} />
+          <Header data={data} isUserOwner={isUserOwner} />
           <div className="tabs-container">
             <TabContext value={tabValue}>
               <Tabs

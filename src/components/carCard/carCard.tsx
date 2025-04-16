@@ -62,7 +62,6 @@ interface CardProps {
 };
 
 const CarCard = ({ data, disableLink, isSmallCard, disableFooter, index }: CardProps) => {
-  console.log(data)
   if (!data.previewImage) {
     return null;
   }

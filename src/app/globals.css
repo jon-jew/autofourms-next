@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+@theme {
+  --color-secondary: #b81111;
+}
+
 body {
   color: var(--foreground);
   background: var(--background);

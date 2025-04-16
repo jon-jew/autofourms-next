@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { redirect } from "next/navigation";
+import Link from "next/link";
 import clx from "classnames";
 import { useForm, useFieldArray, set } from "react-hook-form";
 import { flatten } from "flat";
@@ -27,7 +29,6 @@ import SaveIcon from "@mui/icons-material/Save";
 import ImageIcon from "@mui/icons-material/Image";
 
 import CarCard from "@/components/carCard/carCard";
-import { toTitleCase, toCamelCase, } from "../utils";
 import {
   FormAutoComplete,
   FormTextField,
@@ -36,15 +37,17 @@ import {
   FormTagField,
   FormImageCropper,
 } from "@/components/formComponents";
-import * as carDataJson from "../../assets/carData.json";
+import * as carDataJson from "@/assets/carData.json";
+
+import { WheelTire, Car, CarProps, CarCategoryKey, } from "@/lib/interfaces";
+import { editCar } from "@/lib/firebase/carClient";
 
 import WheelForm from "./wheelForm";
+import { toTitleCase, toCamelCase } from "../utils";
 import CategorySection from "./categorySection";
-import { FIELD_ARRAYS, getIcon } from "./fieldSettings";
+import { FIELD_ARRAYS, getIcon, getCategoryKeys } from "./fieldSettings";
+
 import "./editPanel.scss";
-import Link from "next/link";
-import { WheelTire, Car, CarProps, CarCategoryKey, } from "@/lib/interfaces";
-import { getCategoryKeys } from "./fieldSettings";
 
 const categoryKeys = getCategoryKeys();
 const carData = carDataJson.default;
@@ -190,13 +193,13 @@ const EditPanel = (
   } = useForm({
     defaultValues: transformData(data),
   });
-
-  const handleSave = async (formValues: CarFormValues) => {
+  console.log(formState.dirtyFields, formState.errors)
+  const handleSave = async (formValues: any) => {
     const imageKeys = ["thumbnails", "previewImage"];
     const flatDirtyFields: { [key: string]: boolean } = flatten(formState.dirtyFields);
     const dirtyImages: { name: string, value: string }[] = [];
     const changes: { [key: string]: any } = {};
-
+    console.log(flatDirtyFields, formState.dirtyFields);
     // get changes from dirty fields
     for (const [key, value] of Object.entries(flatDirtyFields)) {
       if (value) {
@@ -227,9 +230,17 @@ const EditPanel = (
         }
       }
     };
-    console.log(changes);
 
-    onSave(changes, dirtyImages);
+    console.log('Saved changes:', changes);
+
+    // onSave(changes, dirtyImages);
+
+    if (carId) {
+      const res = await editCar(carId, changes, dirtyImages);
+      if (res) redirect(`/car-profile/${carId}?tab=info`);
+      else {
+      }
+    }
   };
 
   const onMakeChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -249,7 +260,7 @@ const EditPanel = (
 
   return (
     <div className="form-container">
-      <form className="form" onSubmit={handleSubmit(handleSave)}>
+      <form className="form relative" onSubmit={handleSubmit(handleSave)}>
         <h2>
           {isNewProfile ? "New Car Profile" : "Edit Car Profile"}
         </h2>
@@ -294,81 +305,85 @@ const EditPanel = (
             />
           </div>
         </Modal>
-        <div style={{ width: "100%" }}>
-          <Chip icon={<DirectionsCarIcon />} label="Car Info" sx={{ marginLeft: 0.5, marginBottom: 1, fontWeight: "bold" }} />
-          <div className="form-make-model-container">
-            <FormTextField
-              isOnBlur
-              control={control}
-              name="modelYear"
-              width={90}
-              label="Model Year"
-            />
-            <FormSelectField
-              control={control}
-              name="make"
-              label="Make"
-              width={120}
-              options={carMakeOptions}
-              onChange={onMakeChange}
-            />
-            <FormSelectField
-              control={control}
-              name="model"
-              disabled={!watch("make")}
-              width={120}
-              label="Model"
-              options={carModelOptions}
-              onChange={onModelChange}
-            />
-            {carSubmodelOptions.length > 0 ?
-              <FormSelectField control={control} name="submodel" label="Submodel" options={carSubmodelOptions} />
-              :
-              <FormTextField isOnBlur control={control} name="submodel" label="Submodel" />
-            }
-
-          </div>
-          <FormTextField
-            isOnBlur
-            control={control}
-            name="description"
-            width={350}
-            multiline
-            label="Description"
-          />
-        </div>
-        <div className="preview-container">
+        <div className="p-2 bg-white rounded-lg shadow-lg w-full">
           <div className="form-array-header">
-            <Chip sx={{ fontWeight: "bold" }} label="Preview Image" icon={<ImageIcon />} />
-            <div className="form-array-top-buttons">
-              <Tooltip title={watch(`previewImage`) ? "Edit preview image" : "Add preview image"}>
-                <IconButton size="small" onClick={() => {
-                  setImageModal(true);
-                  setSelectedImagePreview(`previewImage`);
-                }}>
-                  {watch(`previewImage`) ?
-                    <PhotoSizeSelectLargeIcon /> : <AddPhotoAlternateIcon />
-                  }
-                </IconButton>
-              </Tooltip>
+            <div className="category-title">
+              <DirectionsCarIcon /> <h3>Car Info</h3>
             </div>
           </div>
-          <CarCard
-            disableLink
-            disableFooter
-            isSmallCard
-            data={watch()}
-          />
+          <div className="flex flex-col gap-1 p-4">
+            <div className="flex flex-col items-start gap-1">
+              <CarCard
+                disableLink
+                disableFooter
+                isSmallCard
+                data={watch()}
+              />
+              <Button
+                size="small"
+                variant="contained"
+                sx={{ textTransform: "capitalize" }}
+
+                startIcon={watch(`previewImage`) ?
+                  <PhotoSizeSelectLargeIcon /> : <AddPhotoAlternateIcon />
+                }
+                onClick={() => {
+                  setImageModal(true);
+                  setSelectedImagePreview(`previewImage`);
+                }}
+              >
+                {watch(`previewImage`) ?
+                  "Update Image" : "Upload Image"
+                }
+              </Button>
+            </div>
+            <div className="flex flex-wrap gap-2 my-4">
+              <FormTextField
+                isOnBlur
+                control={control}
+                name="modelYear"
+                width={90}
+                label="Model Year"
+              />
+              <FormSelectField
+                control={control}
+                name="make"
+                label="Make"
+                width={120}
+                options={carMakeOptions}
+                onChange={onMakeChange}
+              />
+              <FormSelectField
+                control={control}
+                name="model"
+                disabled={!watch("make")}
+                width={120}
+                label="Model"
+                options={carModelOptions}
+                onChange={onModelChange}
+              />
+              {carSubmodelOptions.length > 0 ?
+                <FormSelectField control={control} name="submodel" label="Submodel" options={carSubmodelOptions} />
+                :
+                <FormTextField isOnBlur control={control} name="submodel" label="Submodel" />
+              }
+              <FormTextField
+                isOnBlur
+                control={control}
+                name="description"
+                width={350}
+                multiline
+                label="Description"
+              />
+            </div>
+
+            {/* <div className="category-title">
+            <LocalOfferIcon /> <h3>Tags</h3>
+          </div> */}
+            <FormTagField control={control} name="tags" label="Tags" />
+          </div>
         </div>
 
-        <div className="form-tags-container">
-          <Chip
-            avatar={<LocalOfferIcon />}
-            label="Tags"
-            sx={{ marginLeft: 0.5, marginBottom: 0.5, fontWeight: "bold" }}
-          />
-          <FormTagField control={control} name="tags" label="Tags" />
-        </div>
         <WheelForm
           watch={watch}
           control={control}
@@ -400,15 +415,15 @@ const EditPanel = (
           >
             Save
           </Button>
-          {/* <Button
+          <Button
             onClick={() => reset()}
             size="small"
             variant="outlined"
             sx={{ textTransform: "capitalize" }}
           >
-            Reset Changes
-          </Button> */}
-          <Link href={`/car-profile/${carId}?tab=2`}>
+            Reset
+          </Button>
+          <Link href={`/car-profile/${carId}?tab=info`}>
             <Button size="small" sx={{ textTransform: "capitalize" }}>
               Cancel
             </Button>

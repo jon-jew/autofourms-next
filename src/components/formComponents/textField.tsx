@@ -13,6 +13,7 @@ interface TextField {
   disabled?: boolean;
   multiline?: boolean;
   isOnBlur?: boolean;
+  fullWidth?: boolean;
   onChange?: any;
 };
 
@@ -26,6 +27,7 @@ const FormTextField = ({
   disabled,
   multiline,
   isOnBlur,
+  fullWidth,
   onChange: _onChange,
 }: TextField) => {
   return (
@@ -49,6 +51,7 @@ const FormTextField = ({
             error={!!error}
             onChange={isOnBlur ? null : handleChange}
             onBlur={isOnBlur ? handleChange : null}
+            fullWidth={fullWidth}
             defaultValue={value}
             multiline={multiline}
             label={label}

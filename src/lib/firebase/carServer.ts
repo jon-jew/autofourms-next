@@ -26,6 +26,7 @@ import {
 import { ref, uploadString, deleteObject, getDownloadURL } from "firebase/storage";
 
 import { db, storage } from './serverApp';
+import { db as clientDb } from './clientApp';
 import { toastError, toastSuccess } from "../../components/utils";
 import { getUsername, uploadImages } from "./utils";
 
@@ -94,12 +95,12 @@ export const getCarById = async (carId: string) => {
     if (carDoc.exists()) {
       return carDoc.data();
     } else {
-      toastError("Failed to get car data");
+      // toastError("Failed to get car data");
       return false;
     }
   } catch (error) {
     console.error(error);
-    toastError("Failed to get car data");
+    // toastError("Failed to get car data");
 
     return false;
   }
@@ -141,57 +142,9 @@ export const getCarsByMakeModel = async (make: string, model: string) => {
     return carList;
   } catch (error) {
     console.error(error);
+    return false;
   }
 }
-
-export const createCar = async (changes: { [key: string]: any }, dirtyImages: Image[], userId: string) => {
-  const uid = uuidv4();
-  try {
-    const imageUrls = await uploadImages(dirtyImages, uid);
-
-    await setDoc(doc(db, "cars", uid), {
-      ...changes,
-      ...imageUrls,
-      created: Date.now(),
-      updated: Date.now(),
-      userId,
-    });
-
-    toastSuccess("Created new car profile");
-    return uid;
-  } catch (e) {
-    toastError("Failed to create new car profile");
-    console.error(e);
-
-    for (const image of dirtyImages) {
-      const loc = image.name.replace(".", "/");
-      const imageRef = ref(storage, `${uid}/${loc}`);
-      if (image.value) deleteObject(imageRef);
-    }
-
-    return false;
-  }
-};
-
-export const editCar = async (carId: string, changes: { [key: string]: any }, dirtyImages: Image[]) => {
-  try {
-    const carRef = doc(db, "cars", carId);
-    const imageUrls = await uploadImages(dirtyImages, carId);
-
-    await updateDoc(carRef, {
-      ...imageUrls,
-      ...changes,
-      updated: Date.now(),
-    });
-
-    toastSuccess("Updated car profile");
-    return carId;
-  } catch (error) {
-    toastError("Failed to update car profile");
-    console.error(error);
-    return false;
-  }
-};
 
 export const getCar = async (carId: string) => {
   try {
@@ -205,11 +158,11 @@ export const getCar = async (carId: string) => {
         username,
       };
     } else {
-      toastError("Car info not found");
+      // toastError("Car info not found");
       return false;
     }
   } catch (error) {
-    toastError("Failed to get car info");
+    // toastError("Failed to get car info");
     console.error(error);
     return false;
   }
@@ -233,8 +186,6 @@ export const getCars = async () => {
         username,
       });
     }
-    console.log(carList)
-
 
     return carList;
   } catch (error) {
@@ -261,7 +212,7 @@ export const getCarsByUserId = async (userId: string) => {
     return carList;
   } catch (error) {
     console.error("failed to retreive car data", error);
-    toastError("Failed to retreive car data");
+    // toastError("Failed to retreive car data");
     return false;
   }
 };

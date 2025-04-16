@@ -1,0 +1,40 @@
+.model-container {
+  // display: grid;
+  // padding: 10px;
+  // grid-template-columns: repeat(auto-fit, 180px);
+  // align-items: flex-start;
+  // justify-content: center;
+  display: flex;
+  flex-direction: row;
+  max-height: 400px;
+  width: 100%;
+  overflow-y: hidden;
+  // overflow-x: hidden;
+  justify-content: center;
+  align-items: center;
+
+  .model-gallery {
+    display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  max-height: 400px;
+  gap: 20px;
+  width: 100%;
+  padding: 20px 30px;
+  overflow-y: hidden;
+  overflow-x: scroll;
+  }
+
+
+  .btn {
+    font-size: 30px;
+    margin: 10px;
+    color: #b81111;
+    padding: 5px 10px;
+    border-radius: 30px;
+    display: inline-block;
+    font-weight: bold;
+
+  }
+
+}

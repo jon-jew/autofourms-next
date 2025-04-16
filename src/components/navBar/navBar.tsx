@@ -24,13 +24,16 @@ import SportsMotorsportsIcon from '@mui/icons-material/SportsMotorsports';
 import { UserContext } from '@/contexts/userContext';
 import { logout } from '@/lib/firebase/auth';
 
+import useUserSession from './useUserSesssion';
 import Login from './login';
 import './navBar.scss';
 
 const logoColor = "#b81111";
 
-function NavBar() {
-  const { user } = useContext(UserContext);
+function NavBar({ initialUser }) {
+  // const { user } = useContext(UserContext);
+  const user = useUserSession(initialUser);
+  // console.log(initialUser, user)
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const [loginModal, setLoginModal] = React.useState(false);
@@ -136,7 +139,7 @@ function NavBar() {
             <Link href="/">
               <div className="logo-container">
                 <Image className="logo" alt="logo" src="/icon.png" width={40} height={31} />
-                <h1>AUTOFOURMS</h1>
+                <h1>AUTOFORUMS</h1>
               </div>
             </Link>
             {/* <Typography
@@ -174,9 +177,9 @@ function NavBar() {
               ))}
             </Box>
             <Box sx={{ flexGrow: 0 }}>
-              {user !== null ?
+              {user ?
                 <>
-                  <Tooltip title="Open settings">
+                  <Tooltip title="User Options">
                     <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                       <Avatar>
                         <SportsMotorsportsIcon />
@@ -206,7 +209,7 @@ function NavBar() {
                 </> :
                 <Button
                   onClick={() => setLoginModal(true)}
-                  sx={{ my: 2, color: 'white', display: 'block' }}
+                  sx={{ my: 2, display: 'block' }}
                 >
                   Login
                 </Button>

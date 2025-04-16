@@ -3,13 +3,14 @@ import Image from 'next/image';
 import { promises as fs } from 'fs';
 
 import CarCardContainer from '@/components/carCard/carCardContainer';
+import ModelContainer from '@/components/explore/modelContainer';
 import ModelCard from '@/components/explore/ModelCard';
-import { getCarsByMake } from '@/lib/firebase/car';
+import { getCarsByMake } from '@/lib/firebase/carServer';
 
 import '../explore.scss';
 
 export default async function MakePage({ params }:
-  { params: Promise<{ make: string }>}
+  { params: Promise<{ make: string }> }
 ) {
   const makeParam = (await params).make;
   const file = await fs.readFile(process.cwd() + '/src/app/car-data.json', 'utf8');
@@ -28,15 +29,12 @@ export default async function MakePage({ params }:
 
   return (
     <div>
-      <Image src={makeData.logo} height={40} width={40} />
-    <div className="model-container">
-      {modelData.map((model) =>
-        <Link href={`/explore/${makeParam}/${model.model}`} key={model.model}>
-          <ModelCard model={model.model} image={model.image} />
-        </Link>
-      )}
-    </div>
-    <CarCardContainer carList={carList} />
+      <div>
+        <Image src={makeData.logo} height={40} width={40} alt="logo" />
+        <h2>{makeParam}</h2>
+      </div>
+      <ModelContainer make={makeParam} models={modelData} />
+      <CarCardContainer carList={carList} />
     </div>
   )
 }
