@@ -10,7 +10,7 @@ runConfig:
 # Environment variables and secrets.
 env:
   - variable: NEXT_PUBLIC_FIREBASE_API_KEY
-    value: AIzaSyB7lL61S-e3HoWoOALHcDMZBG3ouxq9q-g
+    secret: firebaseApiKey
 
   - variable: NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
     value: autofourms.firebaseapp.com
