@@ -20,6 +20,8 @@ import {
   getDocsFromCache,
   deleteDoc,
   setDoc,
+  Timestamp,
+  increment,
   QueryDocumentSnapshot,
   DocumentData,
 } from "firebase/firestore";
@@ -112,3 +114,30 @@ export const editCar = async (carId: string, changes: { [key: string]: any }, di
     return false;
   }
 };
+
+export const handleLike = async (carId: string, userId: string) => {
+  try {
+    const carRef = doc(db, "cars", carId);
+    const likesRef = collection(db, "carLikes", carId, "likes");
+    const userLikeRef = doc(likesRef, userId);
+    const likeSnap = await getDoc(userLikeRef);
+
+    if (likeSnap.exists()) {
+      await deleteDoc(userLikeRef);
+      await updateDoc(carRef, {
+        userLikes: increment(-1),
+      });
+    } else {
+      await setDoc(userLikeRef, {
+        createdOn: Timestamp.fromDate(new Date(Date.now())),
+      });
+      await updateDoc(carRef, {
+        userLikes: increment(1),
+      });
+    }
+ 
+  } catch (error) {
+    console.error(error);
+    return false;
+  }
+}

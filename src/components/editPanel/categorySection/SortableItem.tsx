@@ -14,6 +14,20 @@ import {
   FormSelectField,
 } from "@/components/formComponents";
 
+interface SortableProps {
+  categoryName: string;
+  index: number;
+  isAutoComplete?: boolean;
+  control: any;
+  setValue: Function;
+  options: any[];
+  optionObject: any;
+  valueFieldType: string;
+  remove: Function;
+  item: any;
+  deleteMode: any;
+};
+
 const SortableItem = ({
   categoryName,
   index,
@@ -26,7 +40,7 @@ const SortableItem = ({
   valueFieldType,
   item,
   deleteMode,
-}) => {
+}: SortableProps) => {
   const {
     attributes,
     listeners,
@@ -72,28 +86,13 @@ const SortableItem = ({
             control={control}
             // disableOption={(option) => activeCatagories.includes(option.label)}
             name={`${categoryName}.${index}.label` as const}
-            freeSolo={isAutoComplete}
             width={115}
             label={`Item`}
             onChange={() => setValue(`${categoryName}.${index}.value`, "")}
-            options={options.map((option) => option.label)}
+            options={options.map((option: { label: string }) => option.label)}
           />
 
         }
-        {/* {isAutoComplete &&
-          <div className="sm-controls-container hidden-sm-up">
-            <IconButton
-              size="small"
-              onClick={() => {
-                setValue(`${categoryName}.${index}.value`, "");
-                setValue(`${categoryName}.${index}.label`, "")
-                remove(index);
-              }}
-            >
-              <DeleteIcon fontSize="small" />
-            </IconButton>
-          </div>
-        } */}
         <div className="grow">
           {valueFieldType === "select" ?
             <FormSelectField
@@ -104,7 +103,7 @@ const SortableItem = ({
             /> :
             <FormTextField
               isOnBlur
-              rules={{ required: true }}
+              // rules={{ required: true }}
               control={control}
               name={`${categoryName}.${index}.value` as const}
               // width={isAutoComplete ? 340 : 145}

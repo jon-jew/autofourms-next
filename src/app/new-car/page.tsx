@@ -4,7 +4,7 @@ import React, { useEffect, useContext, useState } from "react";
 import { redirect } from 'next/navigation';
 
 import EditPanel from "@/components/editPanel";
-import { createCar } from "@/lib/firebase/carServer";
+import { createCar } from "@/lib/firebase/carClient";
 import { UserContext } from "@/contexts/userContext";
 
 const initialData = {
@@ -57,23 +57,25 @@ const NewCarPage = () => {
     else if (!userLoading) setLoading(false);
   }, [userLoading]);
 
-  const onSave = async (
-    changes: { [key: string]: any },
-    dirtyImages: { name: string, value: string }[],
-    cb: Function
-  ) => {
-    const res = await createCar(changes, dirtyImages, user.uid);
-    if (res) redirect(`/car-profile/${res}`);
-    else {
-      setLoading(false);
-      cb();
-    }
-  };
+  // const onSave = async (
+  //   changes: { [key: string]: any },
+  //   dirtyImages: { name: string, value: string }[],
+  //   cb: Function
+  // ) => {
+  //   if (user) {
+  //     const res = await createCar(changes, dirtyImages, user.uid);
+  //     if (res) redirect(`/car-profile/${res}`);
+  //   }
+  //   else {
+  //     setLoading(false);
+  //     cb();
+  //   }
+  // };
 
   return (
     <EditPanel
+      carId="newCar"
       data={initialData}
-      onSave={onSave}
       isNewProfile
     />
   )

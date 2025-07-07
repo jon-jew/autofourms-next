@@ -326,9 +326,9 @@ const getCategories = () => {
   });
 }
 
-const getIcon = (name) => {
+const getIcon = (name: string) => {
   const found = FIELD_ARRAYS.find((category) => category.name === name);
-  return found ? found.icon : null;
+  return found ? found.icon : undefined;
 };
 
 export {

@@ -7,13 +7,20 @@ import ModelCard from '../ModelCard';
 
 import './modelContainer.scss';
 
-const ModelContainer = ({ make, models }) => {
+interface Model {
+  model: string,
+  image: string
+};
+
+const ModelContainer = ({ make, models }: { make: string, models: Model[] }) => {
   const containerRef = useRef(null);
 
 
   const handleRightScroll = () => {
     if (containerRef.current) {
+      // @ts-ignore
       const containerWidth = containerRef.current.clientWidth;
+      // @ts-ignore
       containerRef.current.scrollBy({
         left: containerWidth,
         behavior: 'smooth',
@@ -22,8 +29,10 @@ const ModelContainer = ({ make, models }) => {
   }
 
   const handleLeftScroll = () => {
-    if (containerRef.current) {
+    if (containerRef && containerRef.current) {
+      // @ts-ignore
       const containerWidth = containerRef.current.clientWidth;
+      // @ts-ignore
       containerRef.current.scrollBy({
         left: -containerWidth,
         behavior: 'smooth',
@@ -37,11 +46,11 @@ const ModelContainer = ({ make, models }) => {
         ‹
       </button>
       <div ref={containerRef} className="model-gallery">
-      {models.map((model) =>
-        <Link href={`/explore/${make}/${model.model}`} key={model.model}>
-          <ModelCard model={model.model} image={model.image} />
-        </Link>
-      )}
+        {models.map((model: { model: string, image: string }) =>
+          <Link href={`/explore/${make}/${model.model}`} key={model.model}>
+            <ModelCard model={model.model} image={model.image} />
+          </Link>
+        )}
       </div>
       <button onClick={handleRightScroll} className="btn btn-right">
         ›

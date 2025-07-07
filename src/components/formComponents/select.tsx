@@ -9,7 +9,7 @@ interface SelectProps {
   name: string;
   control: any;
   label: string;
-  options: string[] | { value: string, label: string }[];
+  options: string[] | number[] | { value: string | number, label: string | number }[];
   width?: number;
   disabled?: boolean;
   onChange?: any;

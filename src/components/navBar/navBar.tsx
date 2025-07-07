@@ -30,7 +30,7 @@ import './navBar.scss';
 
 const logoColor = "#b81111";
 
-function NavBar({ initialUser }) {
+function NavBar({ initialUser }: { initialUser: any }) {
   // const { user } = useContext(UserContext);
   const user = useUserSession(initialUser);
   // console.log(initialUser, user)

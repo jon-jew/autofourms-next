@@ -2,7 +2,10 @@ import Image from 'next/image';
 
 import './modelCard.scss';
 
-const ModelCard = ({ model, image }) => (
+const ModelCard = (
+  { model, image }:
+    { model: string, image: string }
+) => (
   <div className="model-card">
     <div className="model-image">
       <Image

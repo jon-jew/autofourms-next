@@ -15,8 +15,8 @@ import { toastError, toastSuccess } from '../utils';
 import './login.scss';
 
 interface LoginProps {
-  handleClose: Function;
-  handleToggle: Function;
+  handleClose: any;
+  handleToggle: any;
 }
 
 const Login = ({ handleClose, handleToggle }: LoginProps) => {
@@ -28,7 +28,7 @@ const Login = ({ handleClose, handleToggle }: LoginProps) => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: any) => {
     const res = await signIn(data.email, data.password);
     if (res) handleClose();
   };
@@ -64,7 +64,7 @@ const Login = ({ handleClose, handleToggle }: LoginProps) => {
         Login
       </Button>
       <p>
-        New User? <a onClick={handleToggle}>Create account</a>
+        New User? <button onClick={handleToggle}>Create account</button>
       </p>
     </form>
   );
@@ -79,7 +79,9 @@ const SignUp = ({ handleClose, handleToggle }: LoginProps) => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = async ({ email, password, username }) => {
+  const onSubmit = async (
+    { email, password, username }: any
+  ) => {
     if (!errors) {
       const res = await createUser(email, password, username);
       if (res) handleClose();
@@ -151,7 +153,7 @@ const SignUp = ({ handleClose, handleToggle }: LoginProps) => {
   );
 }
 
-const LoginPage = ({ handleClose }) => {
+const LoginPage = ({ handleClose }: { handleClose: any }) => {
   const [createAccount, setCreateAccount] = useState(false);
   const handleToggle = () => setCreateAccount(!createAccount);
 

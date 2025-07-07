@@ -47,6 +47,7 @@ export default async function RootLayout({
     <html lang="en">
       <body
         className={`${quantico.variable} ${overpass.variable} ${bebas.variable} antialiased`}
+        suppressHydrationWarning
       >
         <Navbar initialUser={currentUser?.toJSON()} />
         <Suspense fallback={<LoadingOverlay isLoading />}>

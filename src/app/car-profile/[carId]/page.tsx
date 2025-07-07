@@ -14,16 +14,21 @@ export default async function CarPage({
   searchParams?: Promise<{ tab?: string }>;
 }) {
   const { currentUser } = await getAuthenticatedAppForUser();
-  console.log(currentUser)
+  const currentUserId = currentUser?.uid;
+
   const carId = (await params).carId;
   if (!carId) return null;
-  const data = await getCar(carId);
+  const data = await getCar(carId, currentUserId);
   if (!data) return null;
 
-  const isUserOwner = currentUser?.uid === data.userId;
   const tab = searchParams ? (await searchParams).tab : 'images';
 
   return (
-    <CarProfile data={data} tab={tab} carId={carId} isUserOwner={isUserOwner} />
+    <CarProfile
+      data={data}
+      tab={tab}
+      carId={carId}
+      currentUserId={currentUserId}
+    />
   );
 }

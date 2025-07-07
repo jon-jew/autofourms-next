@@ -22,21 +22,22 @@ export default function CarPage({
   data,
   images,
   tab,
-  isUserOwner,
+  currentUserId,
 }: {
   carId: string,
   data: { [key: string]: any },
   images?: string[],
   tab?: string,
-  isUserOwner: boolean,
+  currentUserId: string | undefined,
 }) {
 
   const router = useRouter();
   const pathname = usePathname();
 
   const [tabValue, setTabValue] = useState<string>(tab ? tab : 'images');
+  const isUserOwner = currentUserId === data.userId;
 
-  const handleChange = (event, newValue) => {
+  const handleChange = (event: any, newValue: string) => {
     setTabValue(newValue);
     router.push(pathname + '?tab=' + newValue);
   };
@@ -45,7 +46,11 @@ export default function CarPage({
     <div className="car-page">
       {data && carId &&
         <>
-          <Header data={data} isUserOwner={isUserOwner} />
+          <Header
+            data={data}
+            currentUserId={currentUserId}
+            isUserOwner={isUserOwner}
+          />
           <div className="tabs-container">
             <TabContext value={tabValue}>
               <Tabs
@@ -68,7 +73,7 @@ export default function CarPage({
                   display: tabValue === 'images' ? 'block' : 'none'
                 }}
               >
-                <ImageGallery ownerId={data.userId} carId={carId} />
+                <ImageGallery ownerId={data.userId} carId={carId} currentUserId={currentUserId}/>
               </div>
               <div
                 style={{
@@ -76,7 +81,7 @@ export default function CarPage({
                 }}
                 className="tab-panel"
               >
-                <InfoPanel data={data} />
+                <InfoPanel isUserOwner={isUserOwner} data={data} />
               </div>
               <div
                 className="tab-panel"
@@ -84,7 +89,7 @@ export default function CarPage({
                   display: tabValue === 'articles' ? 'block' : 'none'
                 }}
               >
-                <ArticlePanel ownerId={data.userId} identifier={carId} pageType="car" />
+                <ArticlePanel isUserOwner={isUserOwner} identifier={carId} pageType="car" />
               </div>
             </TabContext>
           </div>

@@ -35,6 +35,7 @@ interface ImageEntry {
 interface SelectedImageProps {
   image: ImageEntry | null;
   setSelectedImage: any;
+  currentUserId?: string;
   onClose: Function;
   idx: number | null;
   getImages: Function;
@@ -43,12 +44,12 @@ interface SelectedImageProps {
 const SelectedImage = ({
   image,
   setSelectedImage,
+  currentUserId,
   onClose,
   idx,
   getImages
 }: SelectedImageProps) => {
   if (image === null || idx === null) return null;
-  const { user } = useContext(UserContext);
 
   const [editActive, setEditActive] = useState<boolean>(false);
   const [deleteActive, setDeleteActive] = useState<boolean>(false);
@@ -82,12 +83,14 @@ const SelectedImage = ({
     }
   };
   const handleConfirmDelete = async () => {
-    const res = await deleteCarImage(image.id, user.uid);
-    if (res) {
-      onClose();
-      getImages();
-    } else {
-      setDeleteActive(false);
+    if (currentUserId) {
+      const res = await deleteCarImage(image.id, currentUserId);
+      if (res) {
+        onClose();
+        getImages();
+      } else {
+        setDeleteActive(false);
+      }
     }
   };
 
@@ -215,8 +218,10 @@ const ImageThumbnail = ({ item, handleClick }: ThumbnailProps) => {
   )
 };
 
-export default function ImageGallery({ carId, ownerId }: { carId: string, ownerId: string }) {
-  const { user, userLoading } = useContext(UserContext);
+export default function ImageGallery(
+  { carId, ownerId, currentUserId }:
+    { carId: string, ownerId: string, currentUserId?: string }
+) {
   const [newImageModal, setNewImageModal] = useState<boolean>(false);
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
   const [selectedImageModal, setSelectedImageModal] = useState<boolean>(false);
@@ -237,12 +242,14 @@ export default function ImageGallery({ carId, ownerId }: { carId: string, ownerI
   const handleSelectedImageOpen = (idx: number) => {
     setSelectedImageModal(true);
     setSelectedImage(idx);
-  }
+  };
 
-  const onImageUpload = async (image: string, caption?: string) => {
-    const res = await createCarImage(carId, user.uid, image, caption);
-    if (res) handleNewImageClose();
-  }
+  const onImageUpload = async (image: string, caption?: string | null) => {
+    if (currentUserId === ownerId) {
+      const res = await createCarImage(carId, currentUserId, image, caption);
+      if (res) handleNewImageClose();
+    }
+  };
 
   return (
     <div>
@@ -282,21 +289,21 @@ export default function ImageGallery({ carId, ownerId }: { carId: string, ownerI
           hasCaption
         />
       </Modal>
-      
+
       <div className="image-gallery">
-      {user && !userLoading && user.uid === ownerId &&
-        <div className="top-button-container">
-          <Button
-            size="small"
-            variant="contained"
-            color="primary"
-            startIcon={<AddPhotoAlternateIcon />}
-            onClick={() => setNewImageModal(true)}
-          >
-            New Image
-          </Button>
-        </div>
-      }
+        {ownerId === currentUserId &&
+          <div className="top-button-container">
+            <Button
+              size="small"
+              variant="contained"
+              color="primary"
+              startIcon={<AddPhotoAlternateIcon />}
+              onClick={() => setNewImageModal(true)}
+            >
+              New Image
+            </Button>
+          </div>
+        }
         {images.map((item, idx) => (
           <ImageThumbnail
             key={item.id}

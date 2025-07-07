@@ -25,7 +25,7 @@ const Article = ({
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
-  const handleClick = (event) => {
+  const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
@@ -42,6 +42,7 @@ const Article = ({
           setArticleTitle(title);
         }
       );
+      //@ts-ignore
       setArticleId(param);
     };
     fetchArticle();

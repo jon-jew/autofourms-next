@@ -30,7 +30,7 @@ const UserProfilePage = ({
   const [carList, setCarList] = useState<{ [key: string]: any }[]>([]);
   const [value, setValue] = useState<string>('1');
 
-  const handleChange = (event, newValue) => {
+  const handleChange = (event: any, newValue: any) => {
     setValue(newValue);
   };
 
@@ -85,7 +85,7 @@ const UserProfilePage = ({
               }}
               className="tab-panel"
             >
-              <ArticlePanel identifier={userId} ownerId={userId} pageType="user" />
+              <ArticlePanel identifier={userId} isUserOwner={false} pageType="user" />
             </div>
             <div
               className="tab-panel"

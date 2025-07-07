@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useForm } from "react-hook-form";
@@ -9,6 +10,7 @@ import Chip from '@mui/material/Chip';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 
 import { FormRichTextEditor, FormTextField, FormImageCropper } from '@/components/formComponents';
+import { createCarArticle, editCarArticle } from '@/lib/firebase/article';
 
 import './editArticle.scss';
 
@@ -25,8 +27,18 @@ interface Car {
 };
 
 const EditArticle = (
-  { onSave, data, articleId, carInfo }:
-  { onSave: Function, data: Article, articleId: string, carInfo?: Car | null }
+  {
+    data,
+    articleId,
+    carInfo,
+    currentUserId
+  }:
+    {
+      data: Article,
+      articleId: string,
+      carInfo?: Car | null,
+      currentUserId: string,
+    }
 ) => {
   const [imageModal, setImageModal] = useState<boolean>(false);
   useEffect(() => {
@@ -36,6 +48,19 @@ const EditArticle = (
   const handleImageModalClose = () => {
 
   }
+
+  const onSave = async (value: Article) => {
+    if (articleId === 'newArticle') {
+      await createCarArticle(
+        value.articleContent,
+        value.title,
+        currentUserId,
+        carInfo ? carInfo.id : null
+      );
+    } else {
+      await editCarArticle(articleId, value.title, value.articleContent);
+    }
+  };
 
   const {
     register,

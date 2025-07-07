@@ -14,8 +14,8 @@ export default async function ModelPage({ params }:
   const makeParam = (await params).make;
   const file = await fs.readFile(process.cwd() + '/src/app/car-data.json', 'utf8');
   const carData = JSON.parse(file);
-  const modelList = carData.find((make) => make.make === makeParam);
-  const modelData = modelList.models.find((model) => model.model === modelParam);
+  const modelList = carData.find((make: { make: string }) => make.make === makeParam);
+  const modelData = modelList.models.find((model: { model: string}) => model.model === modelParam);
   console.log(modelData, makeParam, modelParam)
   // if (!makeData) return <p>Not found</p>;
 
@@ -29,7 +29,6 @@ export default async function ModelPage({ params }:
 
   return (
     <div>
-
       <CarCardContainer carList={carList} />
     </div>
   )

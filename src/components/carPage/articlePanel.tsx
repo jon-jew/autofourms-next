@@ -16,10 +16,9 @@ const getDate = (timestamp: number) => {
 };
 
 const ArticlePanel = (
-  { identifier, ownerId, pageType, }:
-  { identifier: string, ownerId: string, pageType: "car" | "user", }
+  { identifier, isUserOwner, pageType, }:
+  { identifier: string, isUserOwner: boolean, pageType: "car" | "user", }
 ) => {
-  const { user, userLoading } = useContext(UserContext);
   const [articles, setArticles] = useState<Article[]>([]);
 
   const newAritcleLink = `/new-article${pageType === "car" ? `?carId=${identifier}` : ""}`;
@@ -41,7 +40,7 @@ const ArticlePanel = (
   return (
     <div className="articles-container">
       <div className="top-button-container">
-        {user && !userLoading && user.uid === ownerId &&
+        {isUserOwner &&
           <Link href={newAritcleLink}>
             <Button startIcon={<EditNoteIcon />} size="small" variant="contained">
               New Article

@@ -14,7 +14,7 @@ const tabSx = { backgroundColor: '#ffffffb4' };
 const ProfileHeader = () => {
   const [value, setValue] = useState('1');
 
-  const handleChange = (event, newValue) => {
+  const handleChange = (event: any, newValue: string) => {
     setValue(newValue);
   };
   return (

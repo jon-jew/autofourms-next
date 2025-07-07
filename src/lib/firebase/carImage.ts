@@ -70,7 +70,7 @@ export const createCarImage = async (
   carId: string,
   userId: string,
   image: string,
-  caption?: string,
+  caption?: string | null,
 ) => {
   const imageUid = uuidv4();
   let imageUrl = "";

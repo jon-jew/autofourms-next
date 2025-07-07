@@ -1,14 +1,12 @@
-"use client";
-
-import React, { useEffect, useState, useContext } from 'react';
+import React from 'react';
 import { redirect } from 'next/navigation';
-import { useSearchParams } from 'next/navigation';
 
 import EditArticle from '@/components/editArticle/editArticle';
 import { UserContext } from '@/contexts/userContext';
+import { getAuthenticatedAppForUser } from '@/lib/firebase/serverApp';
+
 import { createCarArticle } from '@/lib/firebase/article';
 import { getCar } from '@/lib/firebase/carServer';
-import LoadingOverlay from '@/components/loadingOverlay';
 
 interface Article {
   articleContent: string,
@@ -27,57 +25,44 @@ const initialData = {
   title: '',
 };
 
-const NewArticlePage = () => {
-  const searchParams = useSearchParams();
-  const carId = searchParams ? searchParams.get('carId') : null;
-  const { user, userLoading } = useContext(UserContext);
-  const [carInfo, setCarInfo] = useState<Car | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-
-  useEffect(() => {
-    const fetchCarData = async () => {
-      const res = await getCar(carId);
-      if (!res) redirect('/');
-      if (res.userId !== user.uid) redirect('/');
-      else {
-        setCarInfo({
-          id: res.id,
-          make: res.make,
-          model: res.model,
-          modelYear: res.modelYear,
-        });
-        setLoading(false);
-      }
-    };
-    if (!user && !userLoading) redirect('/');
-    if (!userLoading && !carId) setLoading(false);
-    if (carId && !userLoading) fetchCarData();
-  }, [userLoading]);
-
-  const onSave = async (value: Article) => {
-
-    await createCarArticle(
-      value.articleContent,
-      value.title,
-      user.uid,
-      carInfo ? carInfo.id : null
-    );
+const NewArticlePage = async (
+  { params, }:
+    { params: Promise<{ carId: string }> }
+) => {
+  const carId = (await params).carId;
+  const { currentUser } = await getAuthenticatedAppForUser();
+  let carInfo = {
+    id: '',
+    make: '',
+    model: '',
+    modelYear: '',
   };
+
+  if (!currentUser) redirect('/');
+  if (currentUser && carId) {
+    const res = await getCar(carId);
+    if (!res) redirect('/');
+    if (res.userId !== currentUser.uid) redirect('/');
+    else {
+      carInfo = {
+        id: res.id,
+        make: res.make,
+        model: res.model,
+        modelYear: res.modelYear,
+      };
+    }
+  }
+
   return (
     <div>
-      <LoadingOverlay isLoading={userLoading || loading} />
-      {!userLoading &&
-        <div>
-          <EditArticle
-            data={initialData}
-            onSave={onSave}
-            carInfo={carInfo}
-            articleId="newArticle"
-          />
-        </div>
-      }
+      <EditArticle
+        data={initialData}
+        carInfo={carInfo}
+        currentUserId={currentUser.uid}
+        articleId="newArticle"
+      />
     </div>
-  )
+  );
 };
 
 export default NewArticlePage;

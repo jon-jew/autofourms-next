@@ -1,51 +1,34 @@
-"use client";
-
-import React, { useEffect, useState, useContext } from 'react';
+import React from 'react';
 import { redirect } from 'next/navigation';
 
-import EditArticle from '@/components/editArticle/editArticle';
-import { UserContext } from '@/contexts/userContext';
 import { editCarArticle, getCarArticle } from '@/lib/firebase/article';
-import LoadingOverlay from '@/components/loadingOverlay';
+import { getAuthenticatedAppForUser } from '@/lib/firebase/serverApp';
+import EditArticle from '@/components/editArticle/editArticle';
 
-const EditArticlePage = ({
+const EditArticlePage = async ({
   params,
 }: {
   params: Promise<{ articleId: string }>
 }) => {
-  const { user } = useContext(UserContext);
-  const [carInfo, setCarInfo] = useState(null);
-  const [articleId, setArticleId] = useState(null);
-  const [initialData, setInitialData] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const articleId = (await params).articleId
+  const { currentUser } = await getAuthenticatedAppForUser();
+  if (!currentUser) redirect('/');
 
-  useEffect(() => {
-    const fetchArticle = async () => {
-      const param = (await params).articleId;
-      await getCarArticle(
-        param,
-        ({ content, title }) => setInitialData({ articleContent: content, title })
-      );
-      setArticleId(param);
-      setLoading(false);
-    };
-    fetchArticle();
-  }, []);
 
-  const onSave = async (value, carData) => {
-    await editCarArticle(articleId, value.title, value.articleContent);
-    redirect(`/article/${articleId}`);
+  let initialData = {
+    articleContent: '',
+    title: '',
   };
+
+  await getCarArticle(
+    articleId,
+    ({ content, title }: { [key: string]: any }) => initialData = { articleContent: content, title }
+  );
+
+
   return (
-    <div>
-      <LoadingOverlay isLoading={loading} />
-      {initialData &&
-        <div>
-          <EditArticle data={initialData} onSave={onSave} articleId={articleId} />
-        </div>
-      }
-    </div>
-  )
+    <EditArticle currentUserId={currentUser?.uid} data={initialData} articleId={articleId} />
+  );
 };
 
 export default EditArticlePage;

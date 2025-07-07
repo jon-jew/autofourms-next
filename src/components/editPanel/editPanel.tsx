@@ -50,6 +50,7 @@ import { FIELD_ARRAYS, getIcon, getCategoryKeys } from "./fieldSettings";
 import "./editPanel.scss";
 
 const categoryKeys = getCategoryKeys();
+// @ts-ignore
 const carData = carDataJson.default;
 const carMakeOptions = carData.map((make: { make: string }) => make.make);
 
@@ -141,7 +142,7 @@ const getCarModelsByMake = (makeValue: string) => {
 
 const EditPanel = (
   { data, onSave, isNewProfile, carId }:
-    { data: { [key: string]: any }, onSave: Function, isNewProfile?: boolean, carId: string }
+    { data: { [key: string]: any }, onSave?: Function, isNewProfile?: boolean, carId: string }
 ) => {
   const [carModelOptions, setCarModelOptions] = useState<string[]>([]);
   const [carSubmodelOptions, setCarSubmodelOptions] = useState<string[]>([]);
@@ -193,13 +194,14 @@ const EditPanel = (
   } = useForm({
     defaultValues: transformData(data),
   });
-  console.log(formState.dirtyFields, formState.errors)
-  const handleSave = async (formValues: any) => {
+  const handleSave = async (formValues: any, e: any) => {
+    e.preventDefault();
+    console.log(e.nativeEvent, e.nativeEvent.submitter.nodeName)
+    if (e.nativeEvent.submitter.id !== "form-submit-btn") return;
     const imageKeys = ["thumbnails", "previewImage"];
     const flatDirtyFields: { [key: string]: boolean } = flatten(formState.dirtyFields);
     const dirtyImages: { name: string, value: string }[] = [];
     const changes: { [key: string]: any } = {};
-    console.log(flatDirtyFields, formState.dirtyFields);
     // get changes from dirty fields
     for (const [key, value] of Object.entries(flatDirtyFields)) {
       if (value) {
@@ -243,6 +245,10 @@ const EditPanel = (
     }
   };
 
+  const handleErrors = () => {
+    console.log('has errors', formState.errors, formState)
+  }
+
   const onMakeChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     const modelList = getCarModelsByMake(event.target.value)
     setCarModelOptions(modelList);
@@ -260,7 +266,7 @@ const EditPanel = (
 
   return (
     <div className="form-container">
-      <form className="form relative" onSubmit={handleSubmit(handleSave)}>
+      <form className="form relative" onSubmit={handleSubmit(handleSave, handleErrors)}>
         <h2>
           {isNewProfile ? "New Car Profile" : "Edit Car Profile"}
         </h2>
@@ -408,8 +414,10 @@ const EditPanel = (
         <div className="form-footer">
           <Button
             type="submit"
+            id="form-submit-btn"
             size="small"
             variant="contained"
+            disabled={!formState.isDirty}
             sx={{ textTransform: "capitalize" }}
             startIcon={<SaveIcon />}
           >

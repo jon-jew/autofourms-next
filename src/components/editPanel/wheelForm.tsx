@@ -18,13 +18,16 @@ import { FormTextField, FormSelectField } from '../formComponents';
 import { getWheelOptions, getWheelOffsets } from '../utils';
 import './editPanel.scss';
 
-const onChangeNonStaggered = (type: string, name: string, e, setValue) => {
+const onChangeNonStaggered = (type: string, name: string, e: any, setValue: any) => {
   e.preventDefault();
   setValue(`wheelTire.${type}.front.${name}`, e.target.value, { shouldDirty: true });
   setValue(`wheelTire.${type}.rear.${name}`, e.target.value, { shouldDirty: true });
 }
 
-const WheelFields = ({ position, watch, setValue, control }) => {
+const WheelFields = (
+  { position, watch, setValue, control }:
+    { position: string, watch: any, setValue: any, control: any }
+) => {
   const pos = position === 'both' ? 'front' : position;
   return (
     <div className="flex flex-wrap gap-2 justify-start items-center">
@@ -45,14 +48,14 @@ const WheelFields = ({ position, watch, setValue, control }) => {
             control={control}
             disabled={watch('wheelTire.wheel.isStock')}
             name={`wheelTire.wheel.${pos}.brand`}
-            onChange={position === 'both' ? (e) => onChangeNonStaggered('wheel', 'brand', e, setValue) : null}
+            onChange={position === 'both' ? (e: any) => onChangeNonStaggered('wheel', 'brand', e, setValue) : null}
             label="Brand"
           />
           <FormTextField
             control={control}
             disabled={watch('wheelTire.wheel.isStock')}
             name={`wheelTire.wheel.${pos}.model`}
-            onChange={position === 'both' ? (e) => onChangeNonStaggered('wheel', 'model', e, setValue) : null}
+            onChange={position === 'both' ? (e: any) => onChangeNonStaggered('wheel', 'model', e, setValue) : null}
             label="Model"
           />
         </div>
@@ -62,7 +65,7 @@ const WheelFields = ({ position, watch, setValue, control }) => {
             disabled={watch('wheelTire.wheel.isStock')}
             width={115}
             name={`wheelTire.wheel.${pos}.diameter`}
-            onChange={position === 'both' ? (e) => onChangeNonStaggered('wheel', 'diameter', e, setValue) : null}
+            onChange={position === 'both' ? (e: any) => onChangeNonStaggered('wheel', 'diameter', e, setValue) : null}
             label="Diameter"
             options={getWheelOptions(10, 24, 1)}
           />
@@ -71,7 +74,7 @@ const WheelFields = ({ position, watch, setValue, control }) => {
             disabled={watch('wheelTire.wheel.isStock')}
             width={110}
             name={`wheelTire.wheel.${pos}.width`}
-            onChange={position === 'both' ? (e) => onChangeNonStaggered('wheel', 'width', e, setValue) : null}
+            onChange={position === 'both' ? (e: any) => onChangeNonStaggered('wheel', 'width', e, setValue) : null}
             label="Width"
             options={getWheelOptions(4, 14, 0.5)}
           />
@@ -80,7 +83,7 @@ const WheelFields = ({ position, watch, setValue, control }) => {
             disabled={watch('wheelTire.wheel.isStock')}
             width={110}
             name={`wheelTire.wheel.${pos}.offset`}
-            onChange={position === 'both' ? (e) => onChangeNonStaggered('wheel', 'offset', e, setValue) : null}
+            onChange={position === 'both' ? (e: any) => onChangeNonStaggered('wheel', 'offset', e, setValue) : null}
             label="Offset"
             options={getWheelOffsets()}
           />
@@ -90,7 +93,10 @@ const WheelFields = ({ position, watch, setValue, control }) => {
   );
 }
 
-const TireFields = ({ position, watch, setValue, control }) => {
+const TireFields = (
+  { position, watch, setValue, control }:
+    { position: string, watch: any, setValue: any, control: any }
+) => {
   const pos = position === 'both' ? 'front' : position;
 
   return (
@@ -112,14 +118,14 @@ const TireFields = ({ position, watch, setValue, control }) => {
             control={control}
             disabled={watch('wheelTire.tire.isStock')}
             name={`wheelTire.tire.${pos}.brand`}
-            onChange={position === 'both' ? (e) => onChangeNonStaggered('tire', 'brand', e, setValue) : null}
+            onChange={position === 'both' ? (e: any) => onChangeNonStaggered('tire', 'brand', e, setValue) : null}
             label="Brand"
           />
           <FormTextField
             control={control}
             disabled={watch('wheelTire.tire.isStock')}
             name={`wheelTire.tire.${pos}.model`}
-            onChange={position === 'both' ? (e) => onChangeNonStaggered('tire', 'model', e, setValue) : null}
+            onChange={position === 'both' ? (e: any) => onChangeNonStaggered('tire', 'model', e, setValue) : null}
             label="Model"
           />
         </div>
@@ -129,7 +135,7 @@ const TireFields = ({ position, watch, setValue, control }) => {
             control={control}
             disabled={watch('wheelTire.tire.isStock')}
             name={`wheelTire.tire.${pos}.size`}
-            onChange={position === 'both' ? (e) => onChangeNonStaggered('tire', 'size', e, setValue) : null}
+            onChange={position === 'both' ? (e: any) => onChangeNonStaggered('tire', 'size', e, setValue) : null}
             label="Size"
           />
         </div>
@@ -138,7 +144,10 @@ const TireFields = ({ position, watch, setValue, control }) => {
   );
 }
 
-const WheelForm = ({ watch, control, setValue, handleOpenCropper }) => {
+const WheelForm = (
+  { watch, control, setValue, handleOpenCropper } :
+  { watch: any, control: any, setValue: any, handleOpenCropper: any }
+) => {
   const isStaggered = watch('wheelTire.isStaggered');
 
   return (

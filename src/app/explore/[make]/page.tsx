@@ -15,13 +15,13 @@ export default async function MakePage({ params }:
   const makeParam = (await params).make;
   const file = await fs.readFile(process.cwd() + '/src/app/car-data.json', 'utf8');
   const carData = JSON.parse(file);
-  const makeData = carData.find((make) => make.make === makeParam);
+  const makeData = carData.find((make: { make: string }) => make.make === makeParam);
 
   if (!makeData) return <p>Not found</p>;
 
   const carList = await getCarsByMake(makeParam);
 
-  const modelData = makeData.models.map((model) => ({
+  const modelData = makeData.models.map((model: { model: string, image: string }) => ({
     model: model.model,
     image: model.image ? model.image : '/car.png',
   }));

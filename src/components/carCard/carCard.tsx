@@ -10,6 +10,8 @@ import Chip from '@mui/material/Chip';
 import PersonIcon from '@mui/icons-material/Person';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 
+import { formatLikeCount } from '../utils';
+
 import './carCard.scss';
 
 interface ContentProps {
@@ -19,11 +21,36 @@ interface ContentProps {
 const CarCardContent = ({ data }: ContentProps) => (
   <div className="car-card-header loading">
     <div className="content">
-      <div className="like-container">
+      {/* <div className="like-container">
         <div className="like-count">
           <span>1000</span>
           <FavoriteIcon color="inherit" fontSize="small" />
+
+          <Chip
+            color="primary"
+            icon={<PersonIcon color='primary' />}
+            label={data.username}
+            size="small"
+            sx={{ backgroundColor: '#b81111', fontWeight: 'normal' }}
+          />
         </div>
+      </div> */}
+      <div className="user-overlay">
+        {data.username &&
+          <div className="flex flex-row justify-end items-center pt-2 pr-2">
+            {/* <PersonIcon color='primary' />
+            <div className="ml-1">
+              {data.username}
+            </div> */}
+            <Chip
+              color="primary"
+              icon={<PersonIcon color='primary' />}
+              label={data.username}
+              size="small"
+              sx={{ backgroundColor: '#b81111', fontWeight: 'normal' }}
+            />
+          </div>
+        }
       </div>
       <div className="card-overlay">
         <div className="card-overlay-title">
@@ -74,9 +101,9 @@ const CarCard = ({ data, disableLink, isSmallCard, disableFooter, index }: CardP
         "disabled-link": disableLink,
         "small-card": isSmallCard,
       })}
-      // style={{
-      //   animationDelay: `${index ? index * 0.2 : 0}s`,
-      // }}
+    // style={{
+    //   animationDelay: `${index ? index * 0.2 : 0}s`,
+    // }}
     >
       {disableLink ?
         <CarCardContent data={data} />
@@ -87,7 +114,7 @@ const CarCard = ({ data, disableLink, isSmallCard, disableFooter, index }: CardP
       }
       {!disableFooter &&
         <div className="card-footer">
-          {data.username &&
+          {/* {data.username &&
             <Chip
               icon={<PersonIcon />}
               label={data.username}
@@ -95,7 +122,16 @@ const CarCard = ({ data, disableLink, isSmallCard, disableFooter, index }: CardP
               color="primary"
               sx={{ backgroundColor: '#b81111', mr: '5px' }}
             />
-          }
+          } */}
+          <Chip
+            icon={<FavoriteIcon />}
+            label={!isNaN(data.userLikes) ?
+              formatLikeCount(data.userLikes) :
+              '0'}
+            size="small"
+            color="primary"
+            sx={{ color: '#b81111', backgroundColor: '#FFF', mr: '5px' }}
+          />
           {Array.isArray(data.tags) &&
             data.tags.map((tag) =>
               <div

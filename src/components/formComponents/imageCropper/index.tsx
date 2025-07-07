@@ -37,10 +37,10 @@ const VisuallyHiddenInput = styled('input')({
 });
 
 interface ImageCropperProps {
-  initialImgSrc: string | null;
+  initialImgSrc: string | undefined | null;
   onChange: (image: string, caption?: string | null) => void;
-  onClose: Function;
-  Header?: Function | null;
+  onClose: any;
+  Header?: any;
   hasCaption?: boolean;
   aspectRatio: number;
   imageSize: number[];
@@ -55,14 +55,14 @@ const ImageCropper = ({
   aspectRatio,
   imageSize,
 }: ImageCropperProps) => {
-  const [imageSrc, setImageSrc] = React.useState<null | string>(initialImgSrc);
+  const [imageSrc, setImageSrc] = React.useState<null | string | undefined>(initialImgSrc);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
-  const [rotation, setRotation] = useState(0);
-  const [zoom, setZoom] = useState(1);
+  const [rotation, setRotation] = useState<number>(0);
+  const [zoom, setZoom] = useState<number>(1);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const [caption, setCaption] = useState<string | null>(null);
 
-  const onCropComplete = (croppedArea, croppedAreaPixels) => {
+  const onCropComplete = (croppedArea: any, croppedAreaPixels: any) => {
     setCroppedAreaPixels(croppedAreaPixels);
   };
 
@@ -75,13 +75,14 @@ const ImageCropper = ({
         imageSize,
       );
       console.log('donee', { croppedImage });
+      //@ts-ignore
       onChange(croppedImage, caption);
     } catch (e) {
       console.error(e);
     }
   }
 
-  const onFileChange = async (e) => {
+  const onFileChange = async (e: any) => {
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
       let imageDataUrl = await readFile(file) as string;
@@ -91,6 +92,7 @@ const ImageCropper = ({
         const orientation = await getOrientation(file) as unknown as string as '3' | '6' | '8';
         const rotation = ORIENTATION_TO_ANGLE[orientation];
         if (rotation) {
+          //@ts-ignore
           imageDataUrl = await getRotatedImage(imageDataUrl, rotation);
         }
       } catch (e) {
@@ -106,7 +108,7 @@ const ImageCropper = ({
       <div className="modal-header">
         <div className="modal-header-title">
           {/* <Chip avatar={icon} sx={{ fontWeight: 'bold' }} label={label} /> */}
-          <Header />
+          {Header && <Header />}
         </div>
         <div className="close-container">
           <Tooltip title="Close">
@@ -147,6 +149,7 @@ const ImageCropper = ({
                 max={3}
                 step={0.1}
                 aria-labelledby="Zoom"
+                //@ts-ignore
                 onChange={(e, zoom) => setZoom(zoom)}
               />
             </div>
@@ -163,6 +166,7 @@ const ImageCropper = ({
                 max={360}
                 step={1}
                 aria-labelledby="Rotation"
+                //@ts-ignore
                 onChange={(e, rotation) => setRotation(rotation)}
               />
             </div>
@@ -218,7 +222,7 @@ const ImageCropper = ({
   )
 }
 
-function readFile(file) {
+function readFile(file: any) {
   return new Promise((resolve) => {
     const reader = new FileReader()
     reader.addEventListener('load', () => resolve(reader.result), false)

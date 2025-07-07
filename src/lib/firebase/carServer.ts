@@ -38,7 +38,7 @@ interface Image {
 };
 
 
-const getCarProperties = (snapshot:  QueryDocumentSnapshot<DocumentData, DocumentData>) =>{
+const getCarProperties = (snapshot: QueryDocumentSnapshot<DocumentData, DocumentData>) => {
   const {
     userId,
     created,
@@ -60,6 +60,7 @@ const getCarProperties = (snapshot:  QueryDocumentSnapshot<DocumentData, Documen
     powertrain,
     specification,
     suspension,
+    userLikes
   } = snapshot.data();
 
   return {
@@ -84,6 +85,7 @@ const getCarProperties = (snapshot:  QueryDocumentSnapshot<DocumentData, Documen
     powertrain,
     specification,
     suspension,
+    userLikes,
   };
 };
 
@@ -114,14 +116,15 @@ export const getCarsByMake = async (make: string) => {
     );
 
     const carDocs = await getDocs(carQuery);
-    const carList = [];
+    const carList: any[] = [];
     carDocs.forEach((doc) => {
       carList.push(doc.data());
     });
 
     return carList;
   } catch (error) {
-    console.error()
+    console.error(error);
+    return [];
   }
 }
 
@@ -134,7 +137,7 @@ export const getCarsByMakeModel = async (make: string, model: string) => {
     );
 
     const carDocs = await getDocs(carQuery);
-    const carList = [];
+    const carList: any[] = [];
     carDocs.forEach((doc) => {
       carList.push(doc.data());
     });
@@ -142,12 +145,18 @@ export const getCarsByMakeModel = async (make: string, model: string) => {
     return carList;
   } catch (error) {
     console.error(error);
-    return false;
+    return [];
   }
 }
 
-export const getCar = async (carId: string) => {
+export const getCar = async (carId: string, currentUserId?: string) => {
   try {
+    let isLikedByUser = false;
+    if (currentUserId) {
+      const likeRef = doc(db, "carLikes", carId, "likes", currentUserId);
+      const likeSnap = await getDoc(likeRef);
+      if (likeSnap.exists()) isLikedByUser = true; 
+    }
     const carRef = doc(db, "cars", carId);
     const docSnap = await getDoc(carRef);
     if (docSnap.exists()) {
@@ -155,6 +164,7 @@ export const getCar = async (carId: string) => {
       const username = await getUsername(carData.userId);
       return {
         ...carData,
+        isLikedByUser,
         username,
       };
     } else {

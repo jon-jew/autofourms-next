@@ -9,7 +9,7 @@ interface TextField {
   label: string;
   width?: number;
   rules?: { [key: string]: any };
-  type: string;
+  type?: string;
   disabled?: boolean;
   multiline?: boolean;
   isOnBlur?: boolean;

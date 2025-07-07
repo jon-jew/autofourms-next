@@ -16,6 +16,8 @@ import BookmarkIcon from '@mui/icons-material/Bookmark';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import GarageIcon from '@mui/icons-material/Garage';
 
+import { handleLike } from '@/lib/firebase/carClient';
+import { formatLikeCount } from '../utils';
 import CarCard from '@/components/carCard/carCard';
 
 import './header.scss'
@@ -23,46 +25,60 @@ import './header.scss'
 const DesktopHeaderContent = ({ data }: { data: { [key: string]: any } }) => (
   <div className="header-preview">
     <div className="header-img">
-      <Image
+      {/* <Image
         src={data.previewImage}
         alt="Car preview image"
         fill
         style={{ objectFit: "cover" }}
         loading="lazy"
-      />
+      /> */}
+      <CarCard data={data} disableFooter disableLink />
+
     </div>
     <div className="header-content">
-      <Chip
+      {/* <Chip
         color="primary"
         icon={<PersonIcon />}
         label={data.username}
         size="small"
         sx={{ backgroundColor: '#b81111' }}
-      />
-      <div className="header-text">
+      /> */}
+      {/* <div className="header-text">
         <span className="header-year">{data.modelYear}</span><br />
         {data.make} {data.model}
         {data.submodel && <span className="header-submodel">
           {'('}{data.submodel}{')'}
         </span>}
-      </div>
+      </div> */}
     </div>
   </div>
 );
 
 export default function Header(
-  { data, isUserOwner }:
-    { data: { [key: string]: any }, isUserOwner: boolean }
+  { data,
+    isUserOwner,
+    currentUserId,
+  }:
+    {
+      data: { [key: string]: any },
+      isUserOwner: boolean,
+      currentUserId: string | undefined,
+    }
 ) {
   const [bookmark, setBookmark] = React.useState(false);
-  const [liked, setLiked] = React.useState(false);
+  const [likeCount, setLikeCount] = React.useState(data.userLikes);
+  const [liked, setLiked] = React.useState(data.isLikedByUser);
 
-  const handleBookmark = () => {
+  const handleBookmarkClick = () => {
     setBookmark(!bookmark);
   };
 
-  const handleLike = () => {
-    setLiked(!liked);
+  const handleLikeClick = () => {
+    if (currentUserId) {
+      handleLike(data.id, currentUserId);
+      setLiked(!liked);
+      setLikeCount(liked ? likeCount - 1 : likeCount + 1);
+    }
   };
 
   return (
@@ -75,13 +91,21 @@ export default function Header(
           <CarCard data={data} isSmallCard disableFooter disableLink />
         </span>
         <div className="button-container">
-          <IconButton title="Like" onClick={handleLike}>
+          <IconButton
+            disabled={!currentUserId}
+            title="Like"
+            onClick={handleLikeClick}
+          >
             <Badge
-              badgeContent={"120k"}
+              badgeContent={
+                !isNaN(data.userLikes) ?
+                  formatLikeCount(likeCount) :
+                  '0'
+              }
               color={liked ? 'error' : 'default'}
               sx={{
                 '& .MuiBadge-badge': {
-                  left: 38,
+                  left: 35,
                   top: -7,
                   padding: '10px 4px',
                   fontSize: '12px'
@@ -95,7 +119,7 @@ export default function Header(
               {liked ? <FavoriteIcon color="error" /> : <FavoriteBorderIcon />}
             </Badge>
           </IconButton>
-          <IconButton sx={{ marginLeft: '10px' }} title="Bookmark" onClick={handleBookmark} size="small">
+          <IconButton sx={{ marginLeft: '10px' }} title="Bookmark" onClick={handleBookmarkClick} size="small">
             {bookmark ? <BookmarkIcon color="warning" /> : <BookmarkBorderIcon />}
           </IconButton>
           <Link href={`/user-profile/${data.userId}`}>

@@ -68,7 +68,7 @@ const CategorySection = ({
   const { fields, append, remove, swap, } = useFieldArray({
     control,
     name: categoryName,
-    rules: { required: true }
+    // rules: { required: true }
   })
 
   const sensors = useSensors(
@@ -79,7 +79,8 @@ const CategorySection = ({
   );
 
   function handleDragEnd(event: any) {
-    const { active, over } = event;
+    const { activatorEvent, active, over } = event;
+    activatorEvent.preventDefault();
     if (active.id !== over.id) {
       swap(active.data.current.sortable.index, over.data.current.sortable.index)
     }

@@ -1,5 +1,10 @@
 import { toast } from "react-toastify";
 
+const formatLikeCount = (likeCount: number) =>
+    likeCount < 1000 ?
+      new String(likeCount) :
+      `${(likeCount / 1000).toFixed(1)}k`;
+
 const toastSuccess = (message: string) => {
     toast.success(message);
 };
@@ -36,6 +41,7 @@ const getWheelOffsets = () => {
 }
 
 export {
+    formatLikeCount,
     toTitleCase,
     toCamelCase,
     getWheelOptions,

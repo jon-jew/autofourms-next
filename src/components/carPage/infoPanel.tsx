@@ -149,15 +149,13 @@ const WheelInfoCard = (
   );
 }
 
-const InfoPanel = ({ data }: { data: { [key: string]: any } }) => {
-  const { user, userLoading } = useContext(UserContext);
+const InfoPanel = ({ data, isUserOwner }: { data: { [key: string]: any }, isUserOwner: boolean }) => {
   const categories = getCategories();
-
   if (data)
     return (
       <div>
         <div className="top-button-container">
-          {user && !userLoading && user.uid === data.userId &&
+          {isUserOwner &&
             <Link href={`/edit-car/${data.id}`}>
               <Button variant="contained" startIcon={<EditIcon />} size="small">
                 Edit Profile
