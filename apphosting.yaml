@@ -10,25 +10,22 @@ runConfig:
 # Environment variables and secrets.
 env:
   - variable: NEXT_PUBLIC_FIREBASE_API_KEY
-    secret: firebaseApiKey
+    value: AIzaSyB7lL61S-e3HoWoOALHcDMZBG3ouxq9q-g
 
   - variable: NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN
-    secret: firebaseAuthDomain
-
-  - variable: NEXT_PUBLIC_FIREBASE_DATABASE_URL
-    secret: firebaseDatabaseUrl
+    value: autofourms.firebaseapp.com
 
   - variable: NEXT_PUBLIC_FIREBASE_PROJECT_ID
-    secret: firebaseProjectId
+    value: autofourms
 
   - variable: NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET
-    secret: firebaseStorageBucket
+    value: autofourms.firebasestorage.app
 
   - variable: NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID
-    secret: firebaseMessagingSenderId
+    value: 1062807739044
 
   - variable: NEXT_PUBLIC_FIREBASE_APP_ID
-    secret: firebaseAppId
+    value: 1:1062807739044:web:45114af8d73cabe9742431
 # env:
   # Configure environment variables.
   # See https://firebase.google.com/docs/app-hosting/configure#user-defined-environment
