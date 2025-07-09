@@ -1,4 +1,5 @@
 'use server';
+import { notFound } from "next/navigation";
 
 import { getAuthenticatedAppForUser } from "@/lib/firebase/serverApp";
 import { getArticlesByCarId } from '@/lib/firebase/article/articleServer';
@@ -18,9 +19,9 @@ export default async function CarPage({
   const currentUserId = currentUser?.uid;
 
   const carId = (await params).carId;
-  if (!carId) return null;
+  if (!carId) notFound();
   const data = await getCar(carId, currentUserId);
-  if (!data) return null;
+  if (!data) notFound();
   const articles: Article[] = await getArticlesByCarId(carId);
 
   const tab = searchParams ? (await searchParams).tab : 'images';

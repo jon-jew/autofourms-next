@@ -16,15 +16,18 @@ const UserProfilePage = async ({
   const currentUserId = currentUser?.uid;
 
   const userId = (await params).userId;
-  console.log(userId)
   if (!userId) notFound();
   const userInfo = await getUserById(userId);
-  console.log(userInfo)
   if (!userInfo) notFound();
   const carList = await getCarsByUserId(userId);
 
   return (
-    <UserProfile carList={carList} username={userInfo.username} userId={userId} />
+    <UserProfile
+      carList={carList}
+      username={userInfo.username}
+      userId={userId}
+      currentUserId={currentUserId}
+    />
   )
 };
 

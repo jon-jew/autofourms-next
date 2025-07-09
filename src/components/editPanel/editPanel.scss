@@ -20,7 +20,7 @@
   justify-content: flex-start;
   align-items: flex-end;
   font-weight: bold;
-  font-size: 20px;
+  font-size: 18px;
   color: #b81111;
   text-transform: uppercase;
   font-family: var(--font-overpass);
@@ -58,13 +58,15 @@
 
   h2 {
     margin-top: 20px;
-    font-size: 25px;
+    font-size: 20px;
     font-weight: bold;
     text-transform: uppercase;
     font-family: var(--font-overpass);
-    background: #b81111;
-    color: #FFF;
-    padding: 4px 10px 0px 10px;
+    background: #FFF;
+    color: #b81111;
+    padding: 4px 15px;
+    border-top: 3px #b81111 solid;
+    border-bottom: 3px #b81111 solid;
   }
 
   @media screen and (max-width: 450px) {
@@ -75,7 +77,7 @@
     padding: 0px 5px 5px 5px;
     width: 100%;
     display: flex;
-    border-bottom: 2px #b81111 solid;
+    border-bottom: 1px #b81111 solid;
     margin-bottom: 5px;
   
   }
@@ -105,15 +107,6 @@
   .form-array-container {
     position: relative;
     width: 100%;
-
-    .no-entries-container {
-      display: flex;
-      align-items: center;
-      padding: 10px 15px;
-      gap: 5px;
-      font-family: "Roboto","Helvetica","Arial",sans-serif;
-      font-size: 12px;
-    }
 
     .form-array-body {
       display: flex;

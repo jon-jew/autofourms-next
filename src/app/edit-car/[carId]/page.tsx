@@ -21,5 +21,5 @@ export default async function EditPage({
   if (!carData) redirect('/');
   if (carData.userId !== currentUser.uid) redirect('/');
 
-  return <EditPanel data={carData} carId={carId} />;
+  return <EditPanel data={carData} carId={carId} currentUserId={currentUser.uid} />;
 };
