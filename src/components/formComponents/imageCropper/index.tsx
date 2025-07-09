@@ -40,7 +40,8 @@ interface ImageCropperProps {
   initialImgSrc: string | undefined | null;
   onChange: (image: string, caption?: string | null) => void;
   onClose: any;
-  Header?: any;
+  HeaderIcon?: any;
+  headerText?: string;
   hasCaption?: boolean;
   aspectRatio: number;
   imageSize: number[];
@@ -50,7 +51,8 @@ const ImageCropper = ({
   initialImgSrc,
   onChange,
   onClose,
-  Header,
+  HeaderIcon,
+  headerText,
   hasCaption,
   aspectRatio,
   imageSize,
@@ -108,7 +110,7 @@ const ImageCropper = ({
       <div className="modal-header">
         <div className="modal-header-title">
           {/* <Chip avatar={icon} sx={{ fontWeight: 'bold' }} label={label} /> */}
-          {Header && <Header />}
+          {headerText}
         </div>
         <div className="close-container">
           <Tooltip title="Close">

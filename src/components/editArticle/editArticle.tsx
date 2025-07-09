@@ -86,9 +86,7 @@ const EditArticle = (
             aspectRatio={2 / 2}
             imageSize={[400, 400]}
             initialImgSrc={watch('thumbnailImage')}
-            Header={() => {
-              <h2>Thumbnail Image</h2>
-            }}
+            headerText='Thumbnail Image'
           />
         </div>
       </Modal>

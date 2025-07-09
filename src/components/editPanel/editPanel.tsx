@@ -263,6 +263,9 @@ const EditPanel = (
   };
 
   const fieldArrays: FormCategory[] = FIELD_ARRAYS;
+  const selectedImageSplitName = selectedImagePreview ?
+    selectedImagePreview.split(".") :
+    [];
 
   return (
     <div className="form-container">
@@ -284,7 +287,7 @@ const EditPanel = (
           </>
         </Modal> */}
         <Modal open={imageModal} onClose={handleImageModalClose}>
-          <div>
+          {selectedImagePreview ?
             <FormImageCropper
               onChange={(croppedImg: string) => {
                 if (selectedImagePreview)
@@ -299,17 +302,29 @@ const EditPanel = (
               imageSize={[600, 400]}
               hasCaption={false}
               initialImgSrc={selectedImagePreview ? getValues(selectedImagePreview) : null}
-              Header={() => {
-                if (selectedImagePreview) {
-                  const splitName = selectedImagePreview.split(".");
-                  const icon = getIcon(splitName[0] === "thumbnails" ? splitName[1] : selectedImagePreview)
-                  const label = splitName[0] === "thumbnails" ?
-                    `Edit ${toTitleCase(splitName[1])} Thumbnail` : "Edit Preview Image";
-                  return <Chip avatar={icon} sx={{ fontWeight: "bold" }} label={label} />
-                } else return <></>
-              }}
+              // Header={() => {
+              //   if (selectedImagePreview) {
+              //     const splitName = selectedImagePreview.split(".");
+              //     const Icon = getIcon(splitName[0] === "thumbnails" ? splitName[1] : selectedImagePreview)
+              //     const label = splitName[0] === "thumbnails" ?
+              //       `Edit ${toTitleCase(splitName[1])} Thumbnail` : "Edit Preview Image";
+              //     if (Icon)
+              //       return (
+              //         <div>
+              //           <Icon />
+              //         </div>
+              //       );
+              //   } else return <></>
+              // }}
+              HeaderIcon={getIcon(
+                selectedImageSplitName[0] === "thumbnails" ? selectedImageSplitName[1] : selectedImagePreview
+              )}
+              headerText={selectedImageSplitName[0] === "thumbnails" ?
+                `${toTitleCase(selectedImageSplitName[1])} Thumbnail` :
+                "Preview Image"
+              }
             />
-          </div>
+            : <div></div>}
         </Modal>
         <div className="p-2 bg-white rounded-lg shadow-lg w-full">
           <div className="form-array-header">

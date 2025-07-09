@@ -85,10 +85,18 @@ interface CardProps {
   disableLink?: boolean;
   isSmallCard?: boolean;
   disableFooter?: boolean;
+  disableHover?: boolean;
   index?: number;
 };
 
-const CarCard = ({ data, disableLink, isSmallCard, disableFooter, index }: CardProps) => {
+const CarCard = ({
+  data,
+  disableLink,
+  isSmallCard,
+  disableFooter,
+  disableHover,
+  index
+}: CardProps) => {
   if (!data.previewImage) {
     return null;
   }
@@ -98,6 +106,7 @@ const CarCard = ({ data, disableLink, isSmallCard, disableFooter, index }: CardP
       className={clx({
         "car-card": true,
         "fade-in": true,
+        "hover-effect": !disableHover,
         "disabled-link": disableLink,
         "small-card": isSmallCard,
       })}

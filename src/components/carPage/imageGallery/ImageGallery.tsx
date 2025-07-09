@@ -33,8 +33,9 @@ interface ImageEntry {
 
 interface SelectedImageProps {
   image: ImageEntry | null;
-  setSelectedImage: any;
+  handleImageChange: any;
   currentUserId?: string;
+  ownerId: string;
   onClose: Function;
   idx: number | null;
   getImages: Function;
@@ -42,8 +43,9 @@ interface SelectedImageProps {
 
 const SelectedImage = ({
   image,
-  setSelectedImage,
+  handleImageChange,
   currentUserId,
+  ownerId,
   onClose,
   idx,
   getImages
@@ -75,14 +77,16 @@ const SelectedImage = ({
   };
 
   const handleConfirmEdit = async () => {
-    const res = await editCarCaption(image.id, editedCaption);
-    if (res) {
-      setEditActive(false)
-      getImages();
+    if (currentUserId === ownerId) {
+      const res = await editCarCaption(image.id, editedCaption);
+      if (res) {
+        setEditActive(false)
+        getImages();
+      }
     }
   };
   const handleConfirmDelete = async () => {
-    if (currentUserId) {
+    if (currentUserId === ownerId) {
       const res = await deleteCarImage(image.id, currentUserId);
       if (res) {
         onClose();
@@ -95,21 +99,19 @@ const SelectedImage = ({
 
   return (
     <div className="selected-image-container">
-      {/* <IconButton
+      <IconButton
         style={{ position: 'absolute', top: '50%', left: '-10px' }}
-        onClick={() => {
-          setSelectedImage(idx - 1)
-        }}
+        onClick={() => handleImageChange(-1)}
       >
         <NavigateBeforeIcon />
       </IconButton>
       <IconButton
         style={{ position: 'absolute', top: '50%', right: '-10px' }}
-        onClick={() => setSelectedImage(idx + 1)}
+        onClick={() => handleImageChange(1)}
       >
         <NavigateNextIcon />
-      </IconButton> */}
-      {(deleteActive || editActive) &&
+      </IconButton>
+      {(deleteActive || editActive) && currentUserId === ownerId &&
         <div className="image-msg-container">
           {deleteActive &&
             <div className="image-msg">
@@ -151,29 +153,33 @@ const SelectedImage = ({
         </div>
       }
       <div className="image-button-container">
-        <IconButton
-          disabled={deleteActive}
-          onClick={handleClick}
-        >
-          <MoreHorizIcon />
-        </IconButton>
-        <Menu
-          id="basic-menu"
-          anchorEl={anchorEl}
-          open={open}
-          onClose={handleClose}
-          MenuListProps={{
-            'aria-labelledby': 'basic-button',
-          }}
-        >
-          <MenuItem onClick={handleEdit}>Edit</MenuItem>
-          <MenuItem sx={{ color: 'red' }} onClick={handleDelete}>Delete</MenuItem>
-        </Menu>
-        <IconButton disabled={deleteActive} onClick={(event) => onClose()}>
-          <CloseIcon />
-        </IconButton>
+        {currentUserId === ownerId &&
+          <>
+            <IconButton
+              disabled={deleteActive}
+              onClick={handleClick}
+            >
+              <MoreHorizIcon />
+            </IconButton>
+            <Menu
+              id="basic-menu"
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleClose}
+              MenuListProps={{
+                'aria-labelledby': 'basic-button',
+              }}
+            >
+              <MenuItem onClick={handleEdit}>Edit</MenuItem>
+              <MenuItem sx={{ color: 'red' }} onClick={handleDelete}>Delete</MenuItem>
+            </Menu>
+            <IconButton disabled={deleteActive} onClick={(event) => onClose()}>
+              <CloseIcon />
+            </IconButton>
+          </>
+        }
       </div>
-      <div className="modal-image-container">
+      <div className="modal-image">
         <Image alt="Image Gallery" src={image.image} fill />
       </div>
       <p className="modal-image-footer">{image.caption}</p>
@@ -195,11 +201,6 @@ const ImageThumbnail = ({ item, handleClick }: ThumbnailProps) => {
     <a
       key={item.id}
       onClick={handleClick}
-      style={{
-        // backgroundImage: `url(${item.image})`,
-        // opacity: selectedImage === null ? '100' : '0',
-        // pointerEvents: selectedImage === null ? 'auto' : 'none',
-      }}
       className="image-preview loading"
     >
       <Image
@@ -222,7 +223,7 @@ export default function ImageGallery(
     { carId: string, ownerId: string, currentUserId?: string }
 ) {
   const [newImageModal, setNewImageModal] = useState<boolean>(false);
-  const [selectedImage, setSelectedImage] = useState<number | null>(null);
+  const [selectedImage, setSelectedImage] = useState<number>(-1);
   const [selectedImageModal, setSelectedImageModal] = useState<boolean>(false);
   const [images, setImages] = useState<ImageEntry[]>([]);
 
@@ -236,11 +237,23 @@ export default function ImageGallery(
   const handleNewImageClose = () => setNewImageModal(false);
   const handleSelectedImageClose = () => {
     setSelectedImageModal(false);
-    setSelectedImage(null);
+    setSelectedImage(-1);
   };
   const handleSelectedImageOpen = (idx: number) => {
     setSelectedImageModal(true);
     setSelectedImage(idx);
+  };
+
+  const handleImageChange = (change: number) => {
+    if (selectedImage !== -1) {
+      if (selectedImage + change > images.length - 1) {
+        setSelectedImage(0);
+      } else if (selectedImage + change < 0) {
+        setSelectedImage(images.length - 1);
+      } else {
+        setSelectedImage(selectedImage + change);
+      }
+    }
   };
 
   const onImageUpload = async (image: string, caption?: string | null) => {
@@ -259,12 +272,13 @@ export default function ImageGallery(
         aria-describedby="modal-modal-description"
       >
         <SelectedImage
-          setSelectedImage={setSelectedImage}
+          handleImageChange={handleImageChange}
+          ownerId={ownerId}
           onClose={() => {
             setSelectedImageModal(false);
-            setSelectedImage(null);
+            setSelectedImage(-1);
           }}
-          image={selectedImage !== null ? images[selectedImage] : null}
+          image={selectedImage !== -1 ? images[selectedImage] : null}
           idx={selectedImage}
           getImages={getImages}
         />
@@ -282,9 +296,7 @@ export default function ImageGallery(
           imageSize={[800, 800]}
           onChange={onImageUpload}
           onClose={() => setNewImageModal(false)}
-          Header={
-            () => <div>Upload new photo</div>
-          }
+          headerText="New Gallery Image"
           hasCaption
         />
       </Modal>
@@ -295,11 +307,11 @@ export default function ImageGallery(
             <Button
               size="small"
               variant="contained"
-              color="primary"
+              sx={{ backgroundColor: '#b81111', textTransform: 'capitalize' }}
               startIcon={<AddPhotoAlternateIcon />}
               onClick={() => setNewImageModal(true)}
             >
-              New Image
+              New Images
             </Button>
           </div>
         }

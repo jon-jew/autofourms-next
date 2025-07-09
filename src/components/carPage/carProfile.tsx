@@ -17,6 +17,8 @@ import ImageGallery from '@/components/carPage/imageGallery';
 import InfoPanel from '@/components/carPage/infoPanel';
 import ArticlePanel from '@/components/carPage/articlePanel';
 
+import './carProfile.scss';
+
 const tabSx = { backgroundColor: '#ffffffb4' };
 
 export default function CarProfile({

@@ -7,8 +7,6 @@ import { getCar } from '@/lib/firebase/car/carServer';
 
 import CarProfile from '@/components/carPage/carProfile';
 
-import './carPage.scss'
-
 export default async function CarPage({
   params,
   searchParams,
