@@ -10,7 +10,7 @@ import Chip from '@mui/material/Chip';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 
 import { FormRichTextEditor, FormTextField, FormImageCropper } from '@/components/formComponents';
-import { createCarArticle, editCarArticle } from '@/lib/firebase/article';
+import { createCarArticle, editCarArticle } from '@/lib/firebase/article/articleClient';
 
 import './editArticle.scss';
 

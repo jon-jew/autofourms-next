@@ -40,7 +40,7 @@ import {
 import * as carDataJson from "@/assets/carData.json";
 
 import { WheelTire, Car, CarProps, CarCategoryKey, } from "@/lib/interfaces";
-import { editCar } from "@/lib/firebase/carClient";
+import { editCar } from "@/lib/firebase/car/carClient";
 
 import WheelForm from "./wheelForm";
 import { toTitleCase, toCamelCase } from "../utils";

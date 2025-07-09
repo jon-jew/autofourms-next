@@ -4,7 +4,7 @@ import React, { useEffect, useContext, useState } from "react";
 import { redirect } from 'next/navigation';
 
 import EditPanel from "@/components/editPanel";
-import { createCar } from "@/lib/firebase/carClient";
+import { createCar } from "@/lib/firebase/car/carClient";
 import { UserContext } from "@/contexts/userContext";
 
 const initialData = {

@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation';
 import EditPanel from '@/components/editPanel';
 
 import { getAuthenticatedAppForUser } from '@/lib/firebase/serverApp';
-import { getCar } from '@/lib/firebase/carServer';
+import { getCar } from '@/lib/firebase/car/carServer';
 
 export default async function EditPage({
   params,

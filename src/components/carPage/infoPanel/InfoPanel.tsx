@@ -9,9 +9,9 @@ import IconButton from '@mui/material/IconButton';
 import InfoIcon from '@mui/icons-material/Info';
 import EditIcon from '@mui/icons-material/Edit';
 
-import { toTitleCase } from '../utils';
+import { toTitleCase } from '../../utils';
 import { UserContext } from '@/contexts/userContext';
-import { getCategories } from '../editPanel/fieldSettings';
+import { getCategories } from '../../editPanel/fieldSettings';
 
 import './infoPanel.scss';
 

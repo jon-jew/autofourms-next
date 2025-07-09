@@ -5,7 +5,7 @@ import { promises as fs } from 'fs';
 import CarCardContainer from '@/components/carCard/carCardContainer';
 import ModelContainer from '@/components/explore/modelContainer';
 import ModelCard from '@/components/explore/ModelCard';
-import { getCarsByMake } from '@/lib/firebase/carServer';
+import { getCarsByMake } from '@/lib/firebase/car/carServer';
 
 import '../explore.scss';
 

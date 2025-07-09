@@ -1,4 +1,4 @@
-"use client";
+"use client"; 
 
 import * as React from 'react';
 import Link from 'next/link';
@@ -16,8 +16,8 @@ import BookmarkIcon from '@mui/icons-material/Bookmark';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import GarageIcon from '@mui/icons-material/Garage';
 
-import { handleLike } from '@/lib/firebase/carClient';
-import { formatLikeCount } from '../utils';
+import { handleLike } from '@/lib/firebase/car/carClient';
+import { formatLikeCount } from '../../utils';
 import CarCard from '@/components/carCard/carCard';
 
 import './header.scss'

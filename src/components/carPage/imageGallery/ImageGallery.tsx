@@ -19,7 +19,6 @@ import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 
 import { FormImageCropper } from '@/components/formComponents';
 import { createCarImage, getCarImages, deleteCarImage, editCarCaption } from '@/lib/firebase/carImage';
-import { UserContext } from '@/contexts/userContext';
 
 import './imageGallery.scss';
 

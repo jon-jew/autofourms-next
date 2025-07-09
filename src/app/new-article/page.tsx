@@ -5,8 +5,8 @@ import EditArticle from '@/components/editArticle/editArticle';
 import { UserContext } from '@/contexts/userContext';
 import { getAuthenticatedAppForUser } from '@/lib/firebase/serverApp';
 
-import { createCarArticle } from '@/lib/firebase/article';
-import { getCar } from '@/lib/firebase/carServer';
+import { createCarArticle } from '@/lib/firebase/article/articleClient';
+import { getCar } from '@/lib/firebase/car/carServer';
 
 interface Article {
   articleContent: string,
