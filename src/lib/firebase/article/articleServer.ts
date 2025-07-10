@@ -28,18 +28,36 @@ export const getCarArticle = async (articleId: string) => {
       const res = await fetch(data.articleUrl);
       const text = await res.text();
       return {
-        ...data,
-        content: text,
-        title: data.title,
+        res: true,
+        article: {
+          ...data,
+          userId: data.userId,
+          content: text,
+          title: data.title,
+        }
       };
     } else {
       console.error("article not found in db");
-      return false;
+      return {
+        res: false,
+        article: {
+          userId: '',
+          content: '',
+          title: '',
+        }
+      };
     }
 
   } catch (error) {
     console.error(error);
-    return false;
+    return {
+      res: false,
+      article: {
+        userId: '',
+        content: '',
+        title: '',
+      }
+    };
   }
 };
 

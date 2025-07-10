@@ -1,3 +1,3 @@
-import CarProfile from "./carProfile";
+import CarProfile from "./CarProfile";
 
 export default CarProfile;
