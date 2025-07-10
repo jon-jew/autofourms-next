@@ -1,103 +1,33 @@
-"use client";
+"use server";
+import { notFound } from "next/navigation";
 
-import React, { useState, useEffect, useContext } from 'react';
+import { getAuthenticatedAppForUser } from "@/lib/firebase/serverApp";
+import { getCarsByUserId } from '@/lib/firebase/car/carServer';
+import { getUserById } from "@/lib/firebase/user/userServer";
 
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import TabContext from '@mui/lab/TabContext';
+import UserProfile from '@/components/userProfile';
 
-import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
-import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
-import ArticleIcon from '@mui/icons-material/Article';
-
-import { UserContext } from '@/contexts/userContext';
-import { LoadingContext } from '@/contexts/loadingOverlayContext';
-import CarCardContainer from '@/components/carCard/carCardContainer';
-import { ArticlePanel } from '@/components/carPage';
-import { getCarsByUserId } from '@/lib/firebase/carServer';
-import { getUsername } from '@/lib/firebase/utils';
-
-const tabSx = { backgroundColor: '#ffffffb4' };
-
-const UserProfilePage = ({
+const UserProfilePage = async ({
   params,
 }: {
   params: Promise<{ userId: string }>
 }) => {
-  const { user, userLoading } = useContext(UserContext);
-  const [userId, setUserId] = useState<string | any>(null);
-  const [username, setUsername] = useState<string | null>(null);
-  const [carList, setCarList] = useState<{ [key: string]: any }[]>([]);
-  const [value, setValue] = useState<string>('1');
+  const { currentUser } = await getAuthenticatedAppForUser();
+  const currentUserId = currentUser?.uid;
 
-  const handleChange = (event: any, newValue: any) => {
-    setValue(newValue);
-  };
+  const userId = (await params).userId;
+  if (!userId) notFound();
+  const userInfo = await getUserById(userId);
+  if (!userInfo) notFound();
+  const carList = await getCarsByUserId(userId);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const param = (await params).userId;
-      if (param) {
-        const userCarList = await getCarsByUserId(param);
-        if (userCarList) setCarList(userCarList);
-        const username = await getUsername(param);
-        if (username) setUsername(username);
-        setUserId(param);
-      }
-    };
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-
-  }, [userLoading])
-  console.log(carList)
   return (
-    <div className="car-page">
-      {carList && userId &&
-        <div className="tabs-container">
-          <TabContext value={value}>
-            <Tabs
-              value={value}
-              centered
-              onChange={handleChange}
-              aria-label="car page tabs"
-              sx={{
-                ".Mui-selected": { color: `#b81111 !important`, },
-                ".MuiTabs-indicator": { backgroundColor: `#b81111 !important` },
-              }}
-            >
-              <Tab value="1" sx={tabSx} icon={<DirectionsCarIcon />} />
-              <Tab value="2" sx={tabSx} icon={<ArticleIcon />} />
-              <Tab value="3" sx={tabSx} icon={<PhotoLibraryIcon />} />
-            </Tabs>
-            <div
-              className="tab-panel"
-              style={{
-                display: value === "1" ? 'block' : 'none'
-              }}
-            >
-              <CarCardContainer carList={carList} />
-            </div>
-            <div
-              style={{
-                display: value === "2" ? 'block' : 'none'
-              }}
-              className="tab-panel"
-            >
-              <ArticlePanel identifier={userId} isUserOwner={false} pageType="user" />
-            </div>
-            <div
-              className="tab-panel"
-              style={{
-                display: value === "3" ? 'block' : 'none'
-              }}
-            >
-            </div>
-          </TabContext>
-        </div>
-      }
-    </div>
+    <UserProfile
+      carList={carList}
+      username={userInfo.username}
+      userId={userId}
+      currentUserId={currentUserId}
+    />
   )
 };
 

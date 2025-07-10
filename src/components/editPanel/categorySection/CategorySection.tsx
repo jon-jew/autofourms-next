@@ -177,9 +177,9 @@ const CategorySection = ({
               </div>
             </SortableContext>
           </DndContext> :
-          <div className="no-entries-container">
-            <HighlightOffIcon sx={{ opacity: 0.5 }} />
-            <span>No Entries</span>
+          <div className="flex justify-start items-center gap-1">
+            <HighlightOffIcon sx={{ opacity: 0.3 }} />
+            <span className="text-xs">No Entries</span>
           </div>}
       </div>
     </div>

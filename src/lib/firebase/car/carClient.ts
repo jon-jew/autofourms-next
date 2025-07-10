@@ -6,31 +6,19 @@ import _ from "lodash";
 import {
   collection,
   doc,
-  arrayUnion,
-  serverTimestamp,
-  addDoc,
   getDoc,
-  getFirestore,
-  getDocs,
-  query,
-  where,
-  orderBy,
-  limit,
   updateDoc,
-  getDocsFromCache,
   deleteDoc,
   setDoc,
   Timestamp,
   increment,
-  QueryDocumentSnapshot,
-  DocumentData,
 } from "firebase/firestore";
 import { ref, uploadString, deleteObject, getDownloadURL } from "firebase/storage";
 
-import { db, storage } from './clientApp';
-import { toastError, toastSuccess } from "../../components/utils";
+import { db, storage } from '../clientApp';
+import { toastError, toastSuccess } from "../../../components/utils";
 
-import { BasicCar, Car } from "../interfaces";
+import { BasicCar, Car } from "../../interfaces";
 
 interface Image {
   name: string;

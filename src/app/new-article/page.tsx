@@ -2,14 +2,12 @@ import React from 'react';
 import { redirect } from 'next/navigation';
 
 import EditArticle from '@/components/editArticle/editArticle';
-import { UserContext } from '@/contexts/userContext';
 import { getAuthenticatedAppForUser } from '@/lib/firebase/serverApp';
 
-import { createCarArticle } from '@/lib/firebase/article';
-import { getCar } from '@/lib/firebase/carServer';
+import { getCar } from '@/lib/firebase/car/carServer';
 
 interface Article {
-  articleContent: string,
+  content: string,
   title: string,
   thumbnailImage?: string,
 };
@@ -21,7 +19,7 @@ interface Car {
 };
 
 const initialData = {
-  articleContent: '',
+  content: '',
   title: '',
 };
 

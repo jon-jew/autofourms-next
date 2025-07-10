@@ -1,10 +1,12 @@
 'use server';
+import { notFound } from "next/navigation";
+
+import { getAuthenticatedAppForUser } from "@/lib/firebase/serverApp";
+import { getArticlesByCarId } from '@/lib/firebase/article/articleServer';
+import { Article } from "@/lib/interfaces";
+import { getCar } from '@/lib/firebase/car/carServer';
 
 import CarProfile from '@/components/carPage/carProfile';
-import { getCar } from '@/lib/firebase/carServer';
-import { getAuthenticatedAppForUser } from "@/lib/firebase/serverApp";
-
-import './carPage.scss'
 
 export default async function CarPage({
   params,
@@ -17,9 +19,10 @@ export default async function CarPage({
   const currentUserId = currentUser?.uid;
 
   const carId = (await params).carId;
-  if (!carId) return null;
+  if (!carId) notFound();
   const data = await getCar(carId, currentUserId);
-  if (!data) return null;
+  if (!data) notFound();
+  const articles: Article[] = await getArticlesByCarId(carId);
 
   const tab = searchParams ? (await searchParams).tab : 'images';
 
@@ -29,6 +32,7 @@ export default async function CarPage({
       tab={tab}
       carId={carId}
       currentUserId={currentUserId}
+      articles={articles}
     />
   );
 }

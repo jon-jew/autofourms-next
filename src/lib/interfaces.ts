@@ -86,3 +86,11 @@ interface CarProperties extends CarProps {
   }
 };
 export interface Car extends BasicCar, CarProperties { };
+
+export interface Article {
+  id: string,
+  created: number,
+  updated: string,
+  title: string,
+  summary: string,
+};

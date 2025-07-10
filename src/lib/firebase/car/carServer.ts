@@ -1,42 +1,22 @@
 'use server';
 
-import { v4 as uuidv4 } from "uuid";
 import _ from "lodash";
 
 import {
   collection,
   doc,
-  arrayUnion,
-  serverTimestamp,
-  addDoc,
   getDoc,
-  getFirestore,
   getDocs,
   query,
   where,
-  orderBy,
-  limit,
-  updateDoc,
-  getDocsFromCache,
-  deleteDoc,
-  setDoc,
   QueryDocumentSnapshot,
   DocumentData,
 } from "firebase/firestore";
-import { ref, uploadString, deleteObject, getDownloadURL } from "firebase/storage";
 
-import { db, storage } from './serverApp';
-import { db as clientDb } from './clientApp';
-import { toastError, toastSuccess } from "../../components/utils";
-import { getUsername, uploadImages } from "./utils";
+import { db } from '../serverApp';
+import { getUsername } from "../utils";
 
-import { BasicCar, Car } from "../interfaces";
-
-interface Image {
-  name: string;
-  value: string;
-};
-
+import { Car } from "../../interfaces";
 
 const getCarProperties = (snapshot: QueryDocumentSnapshot<DocumentData, DocumentData>) => {
   const {
@@ -222,7 +202,6 @@ export const getCarsByUserId = async (userId: string) => {
     return carList;
   } catch (error) {
     console.error("failed to retreive car data", error);
-    // toastError("Failed to retreive car data");
-    return false;
+    return [];
   }
 };

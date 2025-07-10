@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useContext } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -18,10 +18,8 @@ import Tooltip from '@mui/material/Tooltip';
 import Modal from '@mui/material/Modal';
 import MenuItem from '@mui/material/MenuItem';
 
-import TimeToLeaveIcon from '@mui/icons-material/TimeToLeave';
 import SportsMotorsportsIcon from '@mui/icons-material/SportsMotorsports';
 
-import { UserContext } from '@/contexts/userContext';
 import { logout } from '@/lib/firebase/auth';
 
 import useUserSession from './useUserSesssion';
@@ -73,13 +71,7 @@ function NavBar({ initialUser }: { initialUser: any }) {
       <AppBar sx={{ backgroundColor: '#FFF', }} position="fixed">
         <Container maxWidth="xl">
           <Toolbar disableGutters>
-            {/* <TimeToLeaveIcon sx={{
-              display: { xs: 'none', md: 'flex' },
-              mr: 1,
-              color: logoColor,
-            }} /> */}
-
-            {/* <Typography
+            <Typography
               variant="h6"
               noWrap
               component="a"
@@ -97,9 +89,9 @@ function NavBar({ initialUser }: { initialUser: any }) {
                 alignItems: 'center',
               }}
             >
-              <Image className="logo" src="/icon.png" width={40} height={31} />
+              <Image className="logo" src="/icon.png" width={40} height={31} alt="logo" />
               <span>AUTOFOURMS</span>
-            </Typography> */}
+            </Typography>
 
             <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
               <IconButton
@@ -136,17 +128,11 @@ function NavBar({ initialUser }: { initialUser: any }) {
                 ))}
               </Menu>
             </Box>
-            <Link href="/">
-              <div className="logo-container">
-                <Image className="logo" alt="logo" src="/icon.png" width={40} height={31} />
-                <h1>AUTOFORUMS</h1>
-              </div>
-            </Link>
-            {/* <Typography
-              variant="h5"
+            <Typography
+              variant="h6"
               noWrap
               component="a"
-              href="#app-bar-with-responsive-menu"
+              href="/"
               sx={{
                 mr: 2,
                 display: { xs: 'flex', md: 'none' },
@@ -160,9 +146,9 @@ function NavBar({ initialUser }: { initialUser: any }) {
                 alignItems: 'center',
               }}
             >
-              <Image className="logo" src="/icon.png" width={40} height={31} />
+              <Image className="logo" src="/icon.png" width={40} height={31} alt="logo" />
               <span>AUTOFOURMS</span>
-            </Typography> */}
+            </Typography>
             <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
               {pages.map((page) => (
                 <Link key={page.href} href={page.href}>

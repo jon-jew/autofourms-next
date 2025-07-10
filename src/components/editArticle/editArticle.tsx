@@ -10,12 +10,12 @@ import Chip from '@mui/material/Chip';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 
 import { FormRichTextEditor, FormTextField, FormImageCropper } from '@/components/formComponents';
-import { createCarArticle, editCarArticle } from '@/lib/firebase/article';
+import { createCarArticle, editCarArticle } from '@/lib/firebase/article/articleClient';
 
 import './editArticle.scss';
 
 interface Article {
-  articleContent: string,
+  content: string,
   title: string,
   thumbnailImage?: string,
 };
@@ -52,13 +52,13 @@ const EditArticle = (
   const onSave = async (value: Article) => {
     if (articleId === 'newArticle') {
       await createCarArticle(
-        value.articleContent,
+        value.content,
         value.title,
         currentUserId,
         carInfo ? carInfo.id : null
       );
     } else {
-      await editCarArticle(articleId, value.title, value.articleContent);
+      await editCarArticle(articleId, value.title, value.content);
     }
   };
 
@@ -86,9 +86,7 @@ const EditArticle = (
             aspectRatio={2 / 2}
             imageSize={[400, 400]}
             initialImgSrc={watch('thumbnailImage')}
-            Header={() => {
-              <h2>Thumbnail Image</h2>
-            }}
+            headerText='Thumbnail Image'
           />
         </div>
       </Modal>
@@ -112,7 +110,7 @@ const EditArticle = (
           }
         </div>
 
-        <FormRichTextEditor name="articleContent" control={control} />
+        <FormRichTextEditor name="content" control={control} />
 
         <div className="footer">
           <Button

@@ -3,7 +3,7 @@
 import CarCard from '@/components/carCard/carCard';
 import { LoadingContext } from '@/contexts/loadingOverlayContext';
 import CarCardContainer from '@/components/carCard/carCardContainer';
-import { getCars } from '@/lib/firebase/carServer';
+import { getCars } from '@/lib/firebase/car/carServer';
 
 import './home.scss';
 

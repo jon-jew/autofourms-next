@@ -11,24 +11,30 @@ import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
 import InfoIcon from '@mui/icons-material/Info';
 import ArticleIcon from '@mui/icons-material/Article';
 
-import { Header, ImageGallery, InfoPanel, ArticlePanel } from '@/components/carPage';
+import { Article } from '@/lib/interfaces';
+import Header from '@/components/carPage/header';
+import ImageGallery from '@/components/carPage/imageGallery';
+import InfoPanel from '@/components/carPage/infoPanel';
+import ArticlePanel from '@/components/carPage/articlePanel';
 
-// import './carPage.scss'
+import './carProfile.scss';
 
 const tabSx = { backgroundColor: '#ffffffb4' };
 
-export default function CarPage({
+export default function CarProfile({
   carId,
   data,
   images,
   tab,
   currentUserId,
+  articles,
 }: {
   carId: string,
   data: { [key: string]: any },
   images?: string[],
   tab?: string,
   currentUserId: string | undefined,
+  articles: Article[],
 }) {
 
   const router = useRouter();
@@ -89,7 +95,12 @@ export default function CarPage({
                   display: tabValue === 'articles' ? 'block' : 'none'
                 }}
               >
-                <ArticlePanel isUserOwner={isUserOwner} identifier={carId} pageType="car" />
+                <ArticlePanel
+                  isUserOwner={isUserOwner}
+                  identifier={carId}
+                  articles={articles}
+                  pageType="car"
+                />
               </div>
             </TabContext>
           </div>

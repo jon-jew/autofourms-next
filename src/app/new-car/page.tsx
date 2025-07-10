@@ -1,11 +1,8 @@
-"use client";
-
-import React, { useEffect, useContext, useState } from "react";
+'use server';
 import { redirect } from 'next/navigation';
 
 import EditPanel from "@/components/editPanel";
-import { createCar } from "@/lib/firebase/carClient";
-import { UserContext } from "@/contexts/userContext";
+import { getAuthenticatedAppForUser } from "@/lib/firebase/serverApp";
 
 const initialData = {
   modelYear: "",
@@ -48,37 +45,17 @@ const initialData = {
   }
 };
 
-const NewCarPage = () => {
-  const { user, userLoading } = useContext(UserContext);
-  const [loading, setLoading] = useState<boolean>(true);
-
-  useEffect(() => {
-    if (!user && !userLoading) redirect('/');
-    else if (!userLoading) setLoading(false);
-  }, [userLoading]);
-
-  // const onSave = async (
-  //   changes: { [key: string]: any },
-  //   dirtyImages: { name: string, value: string }[],
-  //   cb: Function
-  // ) => {
-  //   if (user) {
-  //     const res = await createCar(changes, dirtyImages, user.uid);
-  //     if (res) redirect(`/car-profile/${res}`);
-  //   }
-  //   else {
-  //     setLoading(false);
-  //     cb();
-  //   }
-  // };
+export default async function NewCarPage () {
+  const { currentUser } = await getAuthenticatedAppForUser();
+  const currentUserId = currentUser?.uid;
+  if (!currentUserId) redirect('/');
 
   return (
     <EditPanel
       carId="newCar"
+      currentUserId={currentUserId}
       data={initialData}
       isNewProfile
     />
   )
 };
-
-export default NewCarPage;

@@ -3,44 +3,29 @@
 import React, { useState, useEffect } from "react";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import clx from "classnames";
-import { useForm, useFieldArray, set } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { flatten } from "flat";
 import _ from "lodash";
 
 import Modal from "@mui/material/Modal";
-import IconButton from "@mui/material/IconButton";
-import Chip from "@mui/material/Chip";
 import Button from "@mui/material/Button";
-import Tooltip from "@mui/material/Tooltip";
 
-import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
-import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
-import DeleteIcon from "@mui/icons-material/Delete";
-import AddIcon from "@mui/icons-material/Add";
-import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 import PhotoSizeSelectLargeIcon from "@mui/icons-material/PhotoSizeSelectLarge";
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
-import HighlightOffIcon from "@mui/icons-material/HighlightOff";
-import PushPinIcon from "@mui/icons-material/PushPin";
-import HideImageIcon from "@mui/icons-material/HideImage";
 import AddPhotoAlternateIcon from "@mui/icons-material/AddPhotoAlternate";
 import SaveIcon from "@mui/icons-material/Save";
-import ImageIcon from "@mui/icons-material/Image";
 
 import CarCard from "@/components/carCard/carCard";
 import {
-  FormAutoComplete,
   FormTextField,
   FormSelectField,
-  FormRichTextEditor,
   FormTagField,
   FormImageCropper,
 } from "@/components/formComponents";
 import * as carDataJson from "@/assets/carData.json";
 
 import { WheelTire, Car, CarProps, CarCategoryKey, } from "@/lib/interfaces";
-import { editCar } from "@/lib/firebase/carClient";
+import { editCar, createCar } from "@/lib/firebase/car/carClient";
 
 import WheelForm from "./wheelForm";
 import { toTitleCase, toCamelCase } from "../utils";
@@ -140,9 +125,16 @@ const getCarModelsByMake = (makeValue: string) => {
   return [];
 };
 
+interface EditPanelProps {
+  data: { [key: string]: any };
+  isNewProfile?: boolean;
+  carId: string;
+  currentUserId: string;
+}
+
 const EditPanel = (
-  { data, onSave, isNewProfile, carId }:
-    { data: { [key: string]: any }, onSave?: Function, isNewProfile?: boolean, carId: string }
+  { data, isNewProfile, carId, currentUserId }:
+    EditPanelProps
 ) => {
   const [carModelOptions, setCarModelOptions] = useState<string[]>([]);
   const [carSubmodelOptions, setCarSubmodelOptions] = useState<string[]>([]);
@@ -196,7 +188,6 @@ const EditPanel = (
   });
   const handleSave = async (formValues: any, e: any) => {
     e.preventDefault();
-    console.log(e.nativeEvent, e.nativeEvent.submitter.nodeName)
     if (e.nativeEvent.submitter.id !== "form-submit-btn") return;
     const imageKeys = ["thumbnails", "previewImage"];
     const flatDirtyFields: { [key: string]: boolean } = flatten(formState.dirtyFields);
@@ -225,8 +216,13 @@ const EditPanel = (
             name: key,
             value: imageValue,
           });
-          // handle other fields
-        } else {
+        }
+        // handle wheel tire fields
+        else if (firstKey === 'wheelTire') {
+          _.set(changes, key, _.get(formValues, key));
+        }
+        // handle other fields
+        else {
           const formValue = _.get(formValues, key);
           changes[key] = formValue;
         }
@@ -235,13 +231,14 @@ const EditPanel = (
 
     console.log('Saved changes:', changes);
 
-    // onSave(changes, dirtyImages);
-
-    if (carId) {
+    if (carId && !isNewProfile) {
       const res = await editCar(carId, changes, dirtyImages);
       if (res) redirect(`/car-profile/${carId}?tab=info`);
       else {
       }
+    } else {
+      const res = await createCar(changes, dirtyImages, currentUserId);
+      if (res) redirect(`/car-profile/${res}?tab=info`);
     }
   };
 
@@ -263,6 +260,9 @@ const EditPanel = (
   };
 
   const fieldArrays: FormCategory[] = FIELD_ARRAYS;
+  const selectedImageSplitName = selectedImagePreview ?
+    selectedImagePreview.split(".") :
+    [];
 
   return (
     <div className="form-container">
@@ -284,7 +284,7 @@ const EditPanel = (
           </>
         </Modal> */}
         <Modal open={imageModal} onClose={handleImageModalClose}>
-          <div>
+          {selectedImagePreview ?
             <FormImageCropper
               onChange={(croppedImg: string) => {
                 if (selectedImagePreview)
@@ -299,17 +299,29 @@ const EditPanel = (
               imageSize={[600, 400]}
               hasCaption={false}
               initialImgSrc={selectedImagePreview ? getValues(selectedImagePreview) : null}
-              Header={() => {
-                if (selectedImagePreview) {
-                  const splitName = selectedImagePreview.split(".");
-                  const icon = getIcon(splitName[0] === "thumbnails" ? splitName[1] : selectedImagePreview)
-                  const label = splitName[0] === "thumbnails" ?
-                    `Edit ${toTitleCase(splitName[1])} Thumbnail` : "Edit Preview Image";
-                  return <Chip avatar={icon} sx={{ fontWeight: "bold" }} label={label} />
-                } else return <></>
-              }}
+              // Header={() => {
+              //   if (selectedImagePreview) {
+              //     const splitName = selectedImagePreview.split(".");
+              //     const Icon = getIcon(splitName[0] === "thumbnails" ? splitName[1] : selectedImagePreview)
+              //     const label = splitName[0] === "thumbnails" ?
+              //       `Edit ${toTitleCase(splitName[1])} Thumbnail` : "Edit Preview Image";
+              //     if (Icon)
+              //       return (
+              //         <div>
+              //           <Icon />
+              //         </div>
+              //       );
+              //   } else return <></>
+              // }}
+              HeaderIcon={getIcon(
+                selectedImageSplitName[0] === "thumbnails" ? selectedImageSplitName[1] : selectedImagePreview
+              )}
+              headerText={selectedImageSplitName[0] === "thumbnails" ?
+                `${toTitleCase(selectedImageSplitName[1])} Thumbnail` :
+                "Preview Image"
+              }
             />
-          </div>
+            : <div></div>}
         </Modal>
         <div className="p-2 bg-white rounded-lg shadow-lg w-full">
           <div className="form-array-header">
@@ -339,7 +351,7 @@ const EditPanel = (
                 }}
               >
                 {watch(`previewImage`) ?
-                  "Update Image" : "Upload Image"
+                  "Update Thumbnail Image" : "Upload Thumbnail Image"
                 }
               </Button>
             </div>
@@ -431,7 +443,11 @@ const EditPanel = (
           >
             Reset
           </Button>
-          <Link href={`/car-profile/${carId}?tab=info`}>
+          <Link href={isNewProfile ?
+            `/user-profile/${currentUserId}` :
+            `/car-profile/${carId}?tab=info`
+          }
+          >
             <Button size="small" sx={{ textTransform: "capitalize" }}>
               Cancel
             </Button>

@@ -8,7 +8,6 @@ $medium: 800px;
   flex-direction: row;
   position: relative;
   width: 100%;
-  padding-top: 10px;
   height: calc(100vh - 70px);
 
   @media screen and (max-width: $medium) {
@@ -28,6 +27,7 @@ $medium: 800px;
 
   @media screen and (max-width: $medium) {
     flex-direction: column;
+    align-content: flex-start;
 
     .car-page-header {
       min-width: 100%;
@@ -61,7 +61,7 @@ $medium: 800px;
 
   .tabs-container {
     display: block;
-    padding-top: 8px;
+    padding-top: 12px;
     width: 100%;
   }
 }

@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation';
 import EditPanel from '@/components/editPanel';
 
 import { getAuthenticatedAppForUser } from '@/lib/firebase/serverApp';
-import { getCar } from '@/lib/firebase/carServer';
+import { getCar } from '@/lib/firebase/car/carServer';
 
 export default async function EditPage({
   params,
@@ -21,6 +21,5 @@ export default async function EditPage({
   if (!carData) redirect('/');
   if (carData.userId !== currentUser.uid) redirect('/');
 
-
-  return <EditPanel data={carData} carId={carId} />;
+  return <EditPanel data={carData} carId={carId} currentUserId={currentUser.uid} />;
 };

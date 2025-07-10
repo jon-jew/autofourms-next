@@ -1,13 +1,13 @@
 "use client";
 
-import React, { useEffect, useState, useContext } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { Button } from '@mui/material';
 
 import EditNoteIcon from '@mui/icons-material/EditNote';
 
-import { UserContext } from '@/contexts/userContext';
-import { getArticlesByCarId, Article, getArticlesByUserId } from '@/lib/firebase/article';
+import { Article } from '@/lib/interfaces';
+
 import './articlePanel.scss';
 
 const getDate = (timestamp: number) => {
@@ -16,26 +16,21 @@ const getDate = (timestamp: number) => {
 };
 
 const ArticlePanel = (
-  { identifier, isUserOwner, pageType, }:
-  { identifier: string, isUserOwner: boolean, pageType: "car" | "user", }
+  {
+    identifier,
+    isUserOwner,
+    pageType,
+    articles,
+  }:
+    {
+      identifier: string,
+      isUserOwner: boolean,
+      pageType: "car" | "user",
+      articles: Article[],
+    }
 ) => {
-  const [articles, setArticles] = useState<Article[]>([]);
 
   const newAritcleLink = `/new-article${pageType === "car" ? `?carId=${identifier}` : ""}`;
-
-  const fetchCarArticles = async () => {
-    const res = await getArticlesByCarId(identifier);
-    if (res) setArticles(res);
-  };
-  const fetchUserArticles = async () => {
-    const res = await getArticlesByUserId(identifier);
-    if (res) setArticles(res);
-  };
-
-  useEffect(() => {
-    if (pageType === "car") fetchCarArticles();
-    else if (pageType === "user") fetchUserArticles();
-  }, []);
 
   return (
     <div className="articles-container">
@@ -48,7 +43,7 @@ const ArticlePanel = (
           </Link>
         }
       </div>
-      {articles.map((article) =>
+      {articles.map((article: Article) =>
         <Link key={article.id} href={`/article/${article.id}`}>
           <div className="article-preview">
             <div className="article-date">

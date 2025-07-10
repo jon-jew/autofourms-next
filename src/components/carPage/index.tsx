@@ -1,6 +1,3 @@
-import Header from './header';
-import ImageGallery from './imageGallery';
-import InfoPanel from './infoPanel';
-import ArticlePanel from './articlePanel'
+import CarProfile from "./carProfile";
 
-export { Header, ImageGallery, InfoPanel, ArticlePanel };
+export default CarProfile;

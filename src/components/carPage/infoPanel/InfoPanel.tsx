@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useContext } from 'react';
+import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@mui/material';
@@ -9,9 +9,8 @@ import IconButton from '@mui/material/IconButton';
 import InfoIcon from '@mui/icons-material/Info';
 import EditIcon from '@mui/icons-material/Edit';
 
-import { toTitleCase } from '../utils';
-import { UserContext } from '@/contexts/userContext';
-import { getCategories } from '../editPanel/fieldSettings';
+import { toTitleCase } from '../../utils';
+import { getCategories } from '../../editPanel/fieldSettings';
 
 import './infoPanel.scss';
 
@@ -151,6 +150,7 @@ const WheelInfoCard = (
 
 const InfoPanel = ({ data, isUserOwner }: { data: { [key: string]: any }, isUserOwner: boolean }) => {
   const categories = getCategories();
+  console.log(data)
   if (data)
     return (
       <div>
@@ -164,17 +164,19 @@ const InfoPanel = ({ data, isUserOwner }: { data: { [key: string]: any }, isUser
           }
         </div>
         <div className="info-panel-container">
-          {Object.keys(data.specification).length > 0 &&
+          {Object.keys(data.specification ? data.specification: {}).length > 0 &&
             <InfoPanelCard
               title="Specification"
               data={data.specification}
               icon={categories[0].icon}
             />
           }
-          <WheelInfoCard
-            thumbnail={data.thumbnails ? data.thumbnails.wheels : null}
-            data={data.wheelTire}
-          />
+          {data.wheelTire &&
+            <WheelInfoCard
+              thumbnail={data.thumbnails ? data.thumbnails.wheels : null}
+              data={data.wheelTire}
+            />
+          }
           {categories.slice(1).map((category, idx) => {
             if (data[category.name] && Object.keys(data[category.name]).length > 0) {
               return (
