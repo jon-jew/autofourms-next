@@ -14,7 +14,7 @@ import ArticleIcon from '@mui/icons-material/Article';
 import SportsMotorsportsIcon from '@mui/icons-material/SportsMotorsports';
 
 import CarCardContainer from '@/components/carCard/carCardContainer';
-import ArticlePanel from '@/components/carPage/articlePanel';
+import ArticlePanel from '@/components/carProfile/articlePanel';
 
 import './userProfile.scss';
 
