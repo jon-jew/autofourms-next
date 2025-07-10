@@ -1,3 +1,3 @@
-import ImageGallery from "./imageGallery";
+import ImageGallery from "./ImageGallery";
 
 export default ImageGallery;

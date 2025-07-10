@@ -18,10 +18,7 @@ interface Car {
   modelYear: string,
 };
 
-const initialData = {
-  content: '',
-  title: '',
-};
+
 
 const NewArticlePage = async (
   { params, }:
@@ -37,6 +34,11 @@ const NewArticlePage = async (
   };
 
   if (!currentUser) redirect('/');
+  const initialData = {
+    content: '',
+    title: '',
+    userId: currentUser.uid,
+  };
   if (currentUser && carId) {
     const res = await getCar(carId);
     if (!res) redirect('/');

@@ -10,6 +10,7 @@ import './article.scss';
 interface Article {
   title: string;
   content: string;
+  userId: string;
 };
 
 const ArticlePage = async ({
@@ -21,11 +22,11 @@ const ArticlePage = async ({
   if (!articleId) notFound();
   const { currentUser } = await getAuthenticatedAppForUser();
 
-  const articleRes: Article | boolean = await getCarArticle(articleId);
-  if (!articleRes || typeof articleRes === "boolean") notFound();
+  const { article, res }= await getCarArticle(articleId);
+  if (!res) notFound();
 
   return (
-    <CarArticle articleId={articleId} currentUserId={currentUser?.uid} {...articleRes} />
+    <CarArticle articleId={articleId} currentUserId={currentUser?.uid} {...article} />
   );
 };
 

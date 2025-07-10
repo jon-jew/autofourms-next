@@ -1,3 +1,3 @@
-import ArticlePanel from "./articlePanel";
+import ArticlePanel from "./ArticlePanel";
 
 export default ArticlePanel;

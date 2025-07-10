@@ -17,6 +17,7 @@ import './editArticle.scss';
 interface Article {
   content: string,
   title: string,
+  userId: string,
   thumbnailImage?: string,
 };
 interface Car {

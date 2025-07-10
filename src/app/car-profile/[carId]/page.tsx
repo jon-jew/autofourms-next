@@ -6,7 +6,7 @@ import { getArticlesByCarId } from '@/lib/firebase/article/articleServer';
 import { Article } from "@/lib/interfaces";
 import { getCar } from '@/lib/firebase/car/carServer';
 
-import CarProfile from '@/components/carPage/carProfile';
+import CarProfile from '@/components/carPage';
 
 export default async function CarPage({
   params,

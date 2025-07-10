@@ -1,3 +1,3 @@
-import InfoPanel from "./infoPanel";
+import InfoPanel from "./InfoPanel";
 
 export default InfoPanel;

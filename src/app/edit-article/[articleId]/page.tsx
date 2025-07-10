@@ -1,5 +1,5 @@
 'use server';
-import { redirect } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 
 import { getCarArticle } from '@/lib/firebase/article/articleServer';
 import { getAuthenticatedAppForUser } from '@/lib/firebase/serverApp';
@@ -14,8 +14,9 @@ const EditArticlePage = async ({
   const { currentUser } = await getAuthenticatedAppForUser();
   if (!currentUser) redirect('/');
 
-  const initialData = await getCarArticle(articleId);
-
+  const { article: initialData, res } = await getCarArticle(articleId);
+  if (!res) notFound();
+  
   return (
     <EditArticle currentUserId={currentUser?.uid} data={initialData} articleId={articleId} />
   );
