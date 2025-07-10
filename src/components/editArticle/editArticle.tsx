@@ -15,7 +15,7 @@ import { createCarArticle, editCarArticle } from '@/lib/firebase/article/article
 import './editArticle.scss';
 
 interface Article {
-  articleContent: string,
+  content: string,
   title: string,
   thumbnailImage?: string,
 };
@@ -52,13 +52,13 @@ const EditArticle = (
   const onSave = async (value: Article) => {
     if (articleId === 'newArticle') {
       await createCarArticle(
-        value.articleContent,
+        value.content,
         value.title,
         currentUserId,
         carInfo ? carInfo.id : null
       );
     } else {
-      await editCarArticle(articleId, value.title, value.articleContent);
+      await editCarArticle(articleId, value.title, value.content);
     }
   };
 
@@ -110,7 +110,7 @@ const EditArticle = (
           }
         </div>
 
-        <FormRichTextEditor name="articleContent" control={control} />
+        <FormRichTextEditor name="content" control={control} />
 
         <div className="footer">
           <Button

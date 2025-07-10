@@ -14,15 +14,7 @@ const EditArticlePage = async ({
   const { currentUser } = await getAuthenticatedAppForUser();
   if (!currentUser) redirect('/');
 
-  let initialData = {
-    articleContent: '',
-    title: '',
-  };
-
-  await getCarArticle(
-    articleId,
-    ({ content, title }: { [key: string]: any }) => initialData = { articleContent: content, title }
-  );
+  const initialData = await getCarArticle(articleId);
 
   return (
     <EditArticle currentUserId={currentUser?.uid} data={initialData} articleId={articleId} />

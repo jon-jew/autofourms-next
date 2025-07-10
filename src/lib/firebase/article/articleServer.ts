@@ -18,25 +18,20 @@ export interface Article {
   summary: string,
 };
 
-export const getCarArticle = async (articleId: string, cb: Function) => {
+export const getCarArticle = async (articleId: string) => {
   try {
     const articleDocRef = doc(serverDb, "articles", articleId);
     const docSnap = await getDoc(articleDocRef);
 
     if (docSnap.exists()) {
       const data = docSnap.data();
-      const xhr = new XMLHttpRequest();
-      xhr.responseType = "blob";
-      xhr.onload = async (event) => {
-        const blob = xhr.response;
-        const text = await blob.text();
-        cb({
-          content: text,
-          ...data,
-        });
+      const res = await fetch(data.articleUrl);
+      const text = await res.text();
+      return {
+        ...data,
+        content: text,
+        title: data.title,
       };
-      xhr.open("GET", data.articleUrl);
-      xhr.send();
     } else {
       console.error("article not found in db");
       return false;

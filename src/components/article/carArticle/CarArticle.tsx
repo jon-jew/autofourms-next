@@ -9,9 +9,17 @@ import MenuItem from '@mui/material/MenuItem';
 
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 
+interface ArticleProps {
+  content: string;
+  title: string;
+  articleId: string;
+  currentUserId?: string;
+  userId: string;
+};
+
 const CarArticle = (
-  { content, title, articleId }:
-    { content: string, title: string, articleId: string }
+  { content, title, articleId, currentUserId, userId }:
+    ArticleProps
 ) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -25,27 +33,29 @@ const CarArticle = (
 
   return (
     <div className="article-container">
-      <div className="button-container">
-        <IconButton
-          onClick={handleClick}
-        >
-          <MoreHorizIcon />
-        </IconButton>
-        <Menu
-          id="basic-menu"
-          anchorEl={anchorEl}
-          open={open}
-          onClose={handleClose}
-          MenuListProps={{
-            'aria-labelledby': 'basic-button',
-          }}
-        >
-          <Link href={`/edit-article/${articleId}`}>
-            <MenuItem>Edit</MenuItem>
-          </Link>
-          <MenuItem sx={{ color: 'red' }} >Delete</MenuItem>
-        </Menu>
-      </div>
+      {currentUserId === userId &&
+        <div className="button-container">
+          <IconButton
+            onClick={handleClick}
+          >
+            <MoreHorizIcon />
+          </IconButton>
+          <Menu
+            id="basic-menu"
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            MenuListProps={{
+              'aria-labelledby': 'basic-button',
+            }}
+          >
+            <Link href={`/edit-article/${articleId}`}>
+              <MenuItem>Edit</MenuItem>
+            </Link>
+            <MenuItem sx={{ color: 'red' }} >Delete</MenuItem>
+          </Menu>
+        </div>
+      }
       <h1>{title}</h1>
       <div
         className="article-content"

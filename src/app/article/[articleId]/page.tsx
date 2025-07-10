@@ -1,7 +1,8 @@
+import { notFound, redirect } from 'next/navigation';
 
-import React from 'react';
-
+import { getAuthenticatedAppForUser } from '@/lib/firebase/serverApp';
 import { getCarArticle } from '@/lib/firebase/article/articleServer';
+
 import CarArticle from '@/components/article/carArticle';
 
 import './article.scss';
@@ -17,19 +18,14 @@ const ArticlePage = async ({
   params: Promise<{ articleId: string }>
 }) => {
   const articleId = (await params).articleId;
-  let articleRes: Article = {
-    title: '',
-    content: '',
-  }
-  await getCarArticle(
-    articleId,
-    (res: Article) => {
-      articleRes = res;
-    }
-  );
+  if (!articleId) notFound();
+  const { currentUser } = await getAuthenticatedAppForUser();
+
+  const articleRes: Article | boolean = await getCarArticle(articleId);
+  if (!articleRes || typeof articleRes === "boolean") notFound();
 
   return (
-    <CarArticle articleId={articleId} {...articleRes} />
+    <CarArticle articleId={articleId} currentUserId={currentUser?.uid} {...articleRes} />
   );
 };
 
