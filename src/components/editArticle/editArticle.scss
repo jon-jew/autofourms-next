@@ -1,9 +1,12 @@
 .article-form {
-  margin: 10px auto;
+  margin: 70px auto;
   max-width: 850px;
   background: #FFF;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
   padding: 10px;
-  min-height: 400px;
+  min-height: calc(100vh - 140px);
   position: relative;
 
   .footer {

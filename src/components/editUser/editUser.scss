@@ -1,0 +1,17 @@
+.profile-image-overlay {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #42424275;
+  color: #FFF;
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity ease-in 0.1s;
+
+  &:hover {
+    opacity: 1;
+  }
+}

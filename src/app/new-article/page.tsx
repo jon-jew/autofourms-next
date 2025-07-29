@@ -1,24 +1,10 @@
 import React from 'react';
 import { redirect } from 'next/navigation';
 
-import EditArticle from '@/components/editArticle/editArticle';
+import EditArticle from '@/components/editArticle';
 import { getAuthenticatedAppForUser } from '@/lib/firebase/serverApp';
 
 import { getCar } from '@/lib/firebase/car/carServer';
-
-interface Article {
-  content: string,
-  title: string,
-  thumbnailImage?: string,
-};
-interface Car {
-  id: string,
-  make: string,
-  model: string,
-  modelYear: string,
-};
-
-
 
 const NewArticlePage = async (
   { params, }:
@@ -54,14 +40,12 @@ const NewArticlePage = async (
   }
 
   return (
-    <div>
-      <EditArticle
-        data={initialData}
-        carInfo={carInfo}
-        currentUserId={currentUser.uid}
-        articleId="newArticle"
-      />
-    </div>
+    <EditArticle
+      data={initialData}
+      carInfo={carInfo}
+      currentUserId={currentUser.uid}
+      articleId="newArticle"
+    />
   );
 };
 

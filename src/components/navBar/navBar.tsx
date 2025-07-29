@@ -31,6 +31,7 @@ const logoColor = "#b81111";
 function NavBar({ initialUser }: { initialUser: any }) {
   // const { user } = useContext(UserContext);
   const user = useUserSession(initialUser);
+  console.log(user)
   // console.log(initialUser, user)
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -167,8 +168,8 @@ function NavBar({ initialUser }: { initialUser: any }) {
                 <>
                   <Tooltip title="User Options">
                     <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                      <Avatar>
-                        <SportsMotorsportsIcon />
+                      <Avatar src={user?.photoURL}>
+                        {/* <SportsMotorsportsIcon /> */}
                       </Avatar>
                     </IconButton>
                   </Tooltip>
@@ -188,6 +189,11 @@ function NavBar({ initialUser }: { initialUser: any }) {
                     open={Boolean(anchorElUser)}
                     onClose={handleCloseUserMenu}
                   >
+                    <Link href="/edit-user">
+                      <MenuItem>
+                        <Typography sx={{ textAlign: 'center' }}>Edit Profile</Typography>
+                      </MenuItem>
+                    </Link>
                     <MenuItem onClick={logout}>
                       <Typography sx={{ textAlign: 'center' }}>Logout</Typography>
                     </MenuItem>

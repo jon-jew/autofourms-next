@@ -14,7 +14,7 @@ import ArticleIcon from '@mui/icons-material/Article';
 import SportsMotorsportsIcon from '@mui/icons-material/SportsMotorsports';
 
 import CarCardContainer from '@/components/carCard/carCardContainer';
-import ArticlePanel from '@/components/carPage/articlePanel';
+import ArticlePanel from '@/components/carProfile/articlePanel';
 
 import './userProfile.scss';
 
@@ -25,14 +25,15 @@ interface UserProfileProps {
   username: string;
   userId: string;
   currentUserId?: string;
+  photoURL?: string;
 };
 
 const UserProfile = ({
-  carList, username, userId, currentUserId
+  carList, username, userId, currentUserId, photoURL,
 }: UserProfileProps) => {
 
   const [value, setValue] = useState<string>('1');
-
+  console.log(photoURL)
   const handleChange = (event: any, newValue: any) => {
     setValue(newValue);
   };
@@ -41,8 +42,7 @@ const UserProfile = ({
     <div className="flex flex-col pt-5">
       <div className="flex justify-center items-center pb-2">
         <div className="profile-header">
-          <Avatar>
-            <SportsMotorsportsIcon />
+          <Avatar src={photoURL}>
           </Avatar>
           <h2>
             <span>{username}</span>'s Garage

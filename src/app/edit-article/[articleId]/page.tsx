@@ -3,7 +3,7 @@ import { notFound, redirect } from 'next/navigation';
 
 import { getCarArticle } from '@/lib/firebase/article/articleServer';
 import { getAuthenticatedAppForUser } from '@/lib/firebase/serverApp';
-import EditArticle from '@/components/editArticle/editArticle';
+import EditArticle from '@/components/editArticle';
 
 const EditArticlePage = async ({
   params,

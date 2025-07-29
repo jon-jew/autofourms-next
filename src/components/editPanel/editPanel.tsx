@@ -265,13 +265,8 @@ const EditPanel = (
     [];
 
   return (
-    <div className="form-container">
-      <form className="form relative" onSubmit={handleSubmit(handleSave, handleErrors)}>
-        <h2>
-          {isNewProfile ? "New Car Profile" : "Edit Car Profile"}
-        </h2>
-
-        {/* <Modal open={open} onClose={handleClose}>
+    <>
+      {/* <Modal open={open} onClose={handleClose}>
           <>
             {selectedField !== null &&
               <div className="form-details-modal">
@@ -283,178 +278,184 @@ const EditPanel = (
             }
           </>
         </Modal> */}
-        <Modal open={imageModal} onClose={handleImageModalClose}>
-          {selectedImagePreview ?
-            <FormImageCropper
-              onChange={(croppedImg: string) => {
-                if (selectedImagePreview)
-                  setValue(selectedImagePreview, croppedImg, { shouldDirty: true });
-                setImageModal(false);
-              }}
-              onClose={() => {
-                setImageModal(false);
-                setSelectedImagePreview(null);
-              }}
-              aspectRatio={3 / 2}
-              imageSize={[600, 400]}
-              hasCaption={false}
-              initialImgSrc={selectedImagePreview ? getValues(selectedImagePreview) : null}
-              // Header={() => {
-              //   if (selectedImagePreview) {
-              //     const splitName = selectedImagePreview.split(".");
-              //     const Icon = getIcon(splitName[0] === "thumbnails" ? splitName[1] : selectedImagePreview)
-              //     const label = splitName[0] === "thumbnails" ?
-              //       `Edit ${toTitleCase(splitName[1])} Thumbnail` : "Edit Preview Image";
-              //     if (Icon)
-              //       return (
-              //         <div>
-              //           <Icon />
-              //         </div>
-              //       );
-              //   } else return <></>
-              // }}
-              HeaderIcon={getIcon(
-                selectedImageSplitName[0] === "thumbnails" ? selectedImageSplitName[1] : selectedImagePreview
-              )}
-              headerText={selectedImageSplitName[0] === "thumbnails" ?
-                `${toTitleCase(selectedImageSplitName[1])} Thumbnail` :
-                "Preview Image"
-              }
-            />
-            : <div></div>}
-        </Modal>
-        <div className="p-2 bg-white rounded-lg shadow-lg w-full">
-          <div className="form-array-header">
-            <div className="category-title">
-              <DirectionsCarIcon /> <h3>Car Info</h3>
+      <Modal open={imageModal} onClose={handleImageModalClose}>
+        {selectedImagePreview ?
+          <FormImageCropper
+            onChange={(croppedImg: string) => {
+              if (selectedImagePreview)
+                setValue(selectedImagePreview, croppedImg, { shouldDirty: true });
+              setImageModal(false);
+            }}
+            onClose={() => {
+              setImageModal(false);
+              setSelectedImagePreview(null);
+            }}
+            aspectRatio={3 / 2}
+            imageSize={[600, 400]}
+            hasCaption={false}
+            initialImgSrc={selectedImagePreview ? getValues(selectedImagePreview) : null}
+            // Header={() => {
+            //   if (selectedImagePreview) {
+            //     const splitName = selectedImagePreview.split(".");
+            //     const Icon = getIcon(splitName[0] === "thumbnails" ? splitName[1] : selectedImagePreview)
+            //     const label = splitName[0] === "thumbnails" ?
+            //       `Edit ${toTitleCase(splitName[1])} Thumbnail` : "Edit Preview Image";
+            //     if (Icon)
+            //       return (
+            //         <div>
+            //           <Icon />
+            //         </div>
+            //       );
+            //   } else return <></>
+            // }}
+            HeaderIcon={getIcon(
+              selectedImageSplitName[0] === "thumbnails" ? selectedImageSplitName[1] : selectedImagePreview
+            )}
+            headerText={selectedImageSplitName[0] === "thumbnails" ?
+              `${toTitleCase(selectedImageSplitName[1])} Thumbnail` :
+              "Preview Image"
+            }
+          />
+          : <div></div>}
+      </Modal>
+      <div className="form-container">
+        <form className="form relative" onSubmit={handleSubmit(handleSave, handleErrors)}>
+          <h2>
+            {isNewProfile ? "New Car Profile" : "Edit Car Profile"}
+          </h2>
+          <div className="p-2 bg-white rounded-lg shadow-lg w-full">
+            <div className="form-array-header">
+              <div className="category-title">
+                <DirectionsCarIcon /> <h3>Car Info</h3>
+              </div>
             </div>
-          </div>
-          <div className="flex flex-col gap-1 p-4">
-            <div className="flex flex-col items-start gap-1">
-              <CarCard
-                disableLink
-                disableFooter
-                isSmallCard
-                data={watch()}
-              />
-              <Button
-                size="small"
-                variant="contained"
-                sx={{ textTransform: "capitalize" }}
+            <div className="flex flex-col gap-1 p-4">
+              <div className="flex flex-col items-start gap-1">
+                <CarCard
+                  disableLink
+                  disableFooter
+                  isSmallCard
+                  data={watch()}
+                />
+                <Button
+                  size="small"
+                  variant="contained"
+                  sx={{ textTransform: "capitalize" }}
 
-                startIcon={watch(`previewImage`) ?
-                  <PhotoSizeSelectLargeIcon /> : <AddPhotoAlternateIcon />
+                  startIcon={watch(`previewImage`) ?
+                    <PhotoSizeSelectLargeIcon /> : <AddPhotoAlternateIcon />
+                  }
+                  onClick={() => {
+                    setImageModal(true);
+                    setSelectedImagePreview(`previewImage`);
+                  }}
+                >
+                  {watch(`previewImage`) ?
+                    "Update Thumbnail Image" : "Upload Thumbnail Image"
+                  }
+                </Button>
+              </div>
+              <div className="flex flex-wrap gap-2 my-4">
+                <FormTextField
+                  isOnBlur
+                  control={control}
+                  name="modelYear"
+                  width={90}
+                  label="Model Year"
+                />
+                <FormSelectField
+                  control={control}
+                  name="make"
+                  label="Make"
+                  width={120}
+                  options={carMakeOptions}
+                  onChange={onMakeChange}
+                />
+                <FormSelectField
+                  control={control}
+                  name="model"
+                  disabled={!watch("make")}
+                  width={120}
+                  label="Model"
+                  options={carModelOptions}
+                  onChange={onModelChange}
+                />
+                {carSubmodelOptions.length > 0 ?
+                  <FormSelectField control={control} name="submodel" label="Submodel" options={carSubmodelOptions} />
+                  :
+                  <FormTextField isOnBlur control={control} name="submodel" label="Submodel" />
                 }
-                onClick={() => {
-                  setImageModal(true);
-                  setSelectedImagePreview(`previewImage`);
-                }}
-              >
-                {watch(`previewImage`) ?
-                  "Update Thumbnail Image" : "Upload Thumbnail Image"
-                }
-              </Button>
-            </div>
-            <div className="flex flex-wrap gap-2 my-4">
-              <FormTextField
-                isOnBlur
-                control={control}
-                name="modelYear"
-                width={90}
-                label="Model Year"
-              />
-              <FormSelectField
-                control={control}
-                name="make"
-                label="Make"
-                width={120}
-                options={carMakeOptions}
-                onChange={onMakeChange}
-              />
-              <FormSelectField
-                control={control}
-                name="model"
-                disabled={!watch("make")}
-                width={120}
-                label="Model"
-                options={carModelOptions}
-                onChange={onModelChange}
-              />
-              {carSubmodelOptions.length > 0 ?
-                <FormSelectField control={control} name="submodel" label="Submodel" options={carSubmodelOptions} />
-                :
-                <FormTextField isOnBlur control={control} name="submodel" label="Submodel" />
-              }
-              <FormTextField
-                isOnBlur
-                control={control}
-                name="description"
-                width={350}
-                multiline
-                label="Description"
-              />
-            </div>
+                <FormTextField
+                  isOnBlur
+                  control={control}
+                  name="description"
+                  width={350}
+                  multiline
+                  label="Description"
+                />
+              </div>
 
-            {/* <div className="category-title">
+              {/* <div className="category-title">
             <LocalOfferIcon /> <h3>Tags</h3>
           </div> */}
-            <FormTagField control={control} name="tags" label="Tags" />
+              <FormTagField control={control} name="tags" label="Tags" />
+            </div>
           </div>
-        </div>
 
-        <WheelForm
-          watch={watch}
-          control={control}
-          setValue={setValue}
-          handleOpenCropper={handleOpenCropper}
-        />
-
-        {fieldArrays.map(({ name, icon, title, options, isAutoComplete }) =>
-          <CategorySection
-            key={name}
-            categoryName={name}
-            categoryTitle={title}
-            icon={icon}
-            isAutoComplete={isAutoComplete}
-            options={options}
+          <WheelForm
             watch={watch}
-            setValue={setValue}
             control={control}
+            setValue={setValue}
             handleOpenCropper={handleOpenCropper}
           />
-        )}
-        <div className="form-footer">
-          <Button
-            type="submit"
-            id="form-submit-btn"
-            size="small"
-            variant="contained"
-            disabled={!formState.isDirty}
-            sx={{ textTransform: "capitalize" }}
-            startIcon={<SaveIcon />}
-          >
-            Save
-          </Button>
-          <Button
-            onClick={() => reset()}
-            size="small"
-            variant="outlined"
-            sx={{ textTransform: "capitalize" }}
-          >
-            Reset
-          </Button>
-          <Link href={isNewProfile ?
-            `/user-profile/${currentUserId}` :
-            `/car-profile/${carId}?tab=info`
-          }
-          >
-            <Button size="small" sx={{ textTransform: "capitalize" }}>
-              Cancel
+
+          {fieldArrays.map(({ name, icon, title, options, isAutoComplete }) =>
+            <CategorySection
+              key={name}
+              categoryName={name}
+              categoryTitle={title}
+              icon={icon}
+              isAutoComplete={isAutoComplete}
+              options={options}
+              watch={watch}
+              setValue={setValue}
+              control={control}
+              handleOpenCropper={handleOpenCropper}
+            />
+          )}
+          <div className="form-footer">
+            <Button
+              type="submit"
+              id="form-submit-btn"
+              size="small"
+              variant="contained"
+              disabled={!formState.isDirty}
+              sx={{ textTransform: "capitalize" }}
+              startIcon={<SaveIcon />}
+            >
+              Save
             </Button>
-          </Link>
-        </div>
-      </form>
-    </div>
+            <Button
+              onClick={() => reset()}
+              size="small"
+              variant="outlined"
+              sx={{ textTransform: "capitalize" }}
+            >
+              Reset
+            </Button>
+            <Link href={isNewProfile ?
+              `/user-profile/${currentUserId}` :
+              `/car-profile/${carId}?tab=info`
+            }
+            >
+              <Button size="small" sx={{ textTransform: "capitalize" }}>
+                Cancel
+              </Button>
+            </Link>
+          </div>
+        </form>
+      </div>
+    </>
   );
 }
 

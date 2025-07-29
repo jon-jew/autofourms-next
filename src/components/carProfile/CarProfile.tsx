@@ -12,10 +12,10 @@ import InfoIcon from '@mui/icons-material/Info';
 import ArticleIcon from '@mui/icons-material/Article';
 
 import { Article } from '@/lib/interfaces';
-import Header from '@/components/carPage/header';
-import ImageGallery from '@/components/carPage/imageGallery';
-import InfoPanel from '@/components/carPage/infoPanel';
-import ArticlePanel from '@/components/carPage/articlePanel';
+import Header from '@/components/carProfile/header';
+import ImageGallery from '@/components/carProfile/imageGallery';
+import InfoPanel from '@/components/carProfile/infoPanel';
+import ArticlePanel from '@/components/carProfile/articlePanel';
 
 import './carProfile.scss';
 

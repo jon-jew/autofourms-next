@@ -20,13 +20,14 @@ const UserProfilePage = async ({
   const userInfo = await getUserById(userId);
   if (!userInfo) notFound();
   const carList = await getCarsByUserId(userId);
-
+  console.log(userInfo)
   return (
     <UserProfile
       carList={carList}
       username={userInfo.username}
       userId={userId}
       currentUserId={currentUserId}
+      photoURL={userInfo.photoURL}
     />
   )
 };
