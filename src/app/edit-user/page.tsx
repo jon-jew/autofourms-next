@@ -17,7 +17,7 @@ export default async function EditUserPage() {
     <EditUser
       currentUserId={currentUser?.uid}
       username={userData.username}
-      profileImage={userData.profileImage}
+      profileImage={userData.photoURL}
     />
   );
 };

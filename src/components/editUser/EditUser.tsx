@@ -36,6 +36,9 @@ const EditUser = ({ currentUserId, username, profileImage }:
     setValue,
     watch,
     control,
+    formState: {
+      dirtyFields
+    }
   } = useForm({
     defaultValues: {
       username: username,
@@ -45,9 +48,15 @@ const EditUser = ({ currentUserId, username, profileImage }:
 
   const handleSave = async (formValues: FormFields) => {
     setLoading(true);
+    const changes: { [key: string]: string } = {};
+    for (const [key, value] of Object.entries(dirtyFields)) {
+      if (value && (key === 'username' || key === 'profileImage')) {
+        changes[key] = formValues[key];
+      }
+    }
     const res = await editUserProfile({
       userUid: currentUserId,
-      ...formValues,
+      changes,
     });
     if (res) toastSuccess('Saved profile');
     else toastError('Failed to save profile');
@@ -64,7 +73,7 @@ const EditUser = ({ currentUserId, username, profileImage }:
       // Read the file as a data URL
       const reader = new FileReader();
       reader.onload = () => {
-        setValue('profileImage', reader.result as string);
+        setValue('profileImage', reader.result as string, { shouldDirty: true });
       };
       reader.readAsDataURL(file);
     }

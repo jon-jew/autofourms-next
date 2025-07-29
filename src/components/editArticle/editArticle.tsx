@@ -73,7 +73,7 @@ const EditArticle = (
   } = useForm({ defaultValues: data });
 
   return (
-    <div>
+    <>
       <Modal open={imageModal} onClose={handleImageModalClose}>
         <div>
           <FormImageCropper
@@ -92,9 +92,11 @@ const EditArticle = (
         </div>
       </Modal>
       <form className="article-form" onSubmit={handleSubmit(onSave)}>
-        <h2>
-          {articleId === 'newArticle' ? 'New Article' : 'Edit Article'}
-        </h2>
+        <div className="inline-flex">
+          <h2 className="page-title">
+            {articleId === 'newArticle' ? 'New Article' : 'Edit Article'}
+          </h2>
+        </div>
         <div>
           <FormTextField
             name="title"
@@ -110,9 +112,9 @@ const EditArticle = (
             />
           }
         </div>
-
-        <FormRichTextEditor name="content" control={control} />
-
+        <div>
+          <FormRichTextEditor name="content" control={control} />
+        </div>
         <div className="footer">
           <Button
             type="submit"
@@ -129,8 +131,8 @@ const EditArticle = (
             </Button>
           </Link>
         </div>
-      </form>
-    </div >
+      </form >
+    </>
   )
 };
 
